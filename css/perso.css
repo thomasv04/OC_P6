@@ -25,14 +25,15 @@ h1 {
 .persos {
     position: absolute;
     height: auto;
-    width: 80%;
+    width: 90vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-content: space-around;
     align-items: center;
+    flex-wrap: wrap;
 
 }
 

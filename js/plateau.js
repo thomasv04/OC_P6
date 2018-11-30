@@ -14,16 +14,29 @@ class Plateau {
 
         this.creation();
         this.contour_mur();
+        this.ajoutPerso();
     }
 
     creation() {
+        let y = -1;
         for (let i = 1; i < this.nb_cases_x * this.nb_cases_x + 1; i++) {
             let case_creation_id = "case" + i;
             let case_creation = new Carre();
             let random = Math.floor(Math.random() * (this.taux_apparition_mur - 0 + 1)) + 0; // 1 chance sur taux_apparition_mur d'avoir un mur
             let random_objet = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
-            case_creation.init(i, 40, 0, i * 10, i * 10, 0, 0, random, random_objet, random_objet, random_objet, random_objet); //id, taille, espace, top, left, occupee, arme, mur, heal, speed, poison, shield
-            $(this.div).append('<div class="case case' + i + '"></div>');
+
+            let x = (i % this.nb_cases_x) - 2;
+            let id_case = '' + x + '' + y;
+
+
+
+            case_creation.init(id_case, 40, 0, x, y, 0, 0, random, random_objet, random_objet, random_objet, random_objet); //id, taille, espace, posX, posY, occupee, arme, mur, heal, speed, poison, shield
+
+            if (x == 11) {
+                y++;
+            }
+
+            $(this.div).append('<div class="case case' + i + ' casePos' + id_case + '"></div>');
             //$(this.div).append('<div class="case case' + i + '">' + case_creation.id + '</div>');
             $('.case').css('width', case_creation.taille);
             $('.case').css('height', case_creation.taille);
@@ -63,15 +76,10 @@ class Plateau {
         $('.heal').append('<div class="objet"><img src="img/heal.png" alt=""></div>');
         $('.poison').append('<div class="objet"><img src="img/poison.png" alt=""></div>');
         $('.speed').append('<div class="objet"><img src="img/speed.png" alt=""></div>');
-
-        $('.case27').append('<div class="perso1"><img src="img/perso12.png" alt=""></div>');
-        $('.case144').append('<div class="perso2"><img src="img/perso5.png" alt=""></div>');
         $('.plateau').append('<div class="HUD_perso1"><img src="img/perso12.png" alt=""></div>');
         $('.plateau').append('<div class="HUD_perso2"><img src="img/perso5.png" alt=""></div>');
         $('.case27').removeClass('mur').addClass('not_mur');
         $('.case144').removeClass('mur').addClass('not_mur');
-        $('.perso1 img').css('height', $('.case1').height() + 'px');
-        $('.perso2 img').css('height', $('.case1').height() + 'px');
         $('.objet').css('height', $('.case1').height() + 'px');
 
 
@@ -112,6 +120,26 @@ class Plateau {
         }
 
 
+
+
+    }
+
+    ajoutPerso() {
+        //init(id, hp, shield, pm, skin, arme, position_x, position_y)
+        let Perso1 = new Personnage();
+        Perso1.init(1, 100, 0, 3, "perso5", 10, 0, 0);
+
+        let Perso2 = new Personnage();
+        Perso2.init(2, 100, 0, 3, "perso10", 10, 11, 11);
+
+        let id_case_p1 = '' + Perso1.position_x + '' + Perso1.position_y;
+        let id_case_p2 = '' + Perso2.position_x + '' + Perso2.position_y;
+
+        $('.casePos' + id_case_p1).append('<div class="perso1"><img src="img/perso12.png" alt=""></div>');
+        $('.casePos' + id_case_p2).append('<div class="perso2"><img src="img/perso5.png" alt=""></div>');
+
+        $('.perso1 img').css('height', $('.case1').height() + 'px');
+        $('.perso2 img').css('height', $('.case1').height() + 'px');
 
 
     }

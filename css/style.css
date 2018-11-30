@@ -45,7 +45,7 @@ h1{
     height: 1px;
     background: #3B2530;
     margin: auto;
-    font-size: 15px;
+    font-size: 5px;
     color: grey;
     position:relative;
 }
@@ -60,9 +60,6 @@ h1{
     left:-30%;
     transform-origin: center;
     transform: translateX(-50%);
-    animation:animation_perso_HUD 1.3s infinite;
-    animation-timing-function: ease-out;
-    animation-delay: 1s;
 }
 
 .HUD_perso1 img{
@@ -124,29 +121,6 @@ h1{
     100%{
         margin-top:0px;
         margin-left:-5%;
-    }
-}
-
-@keyframes animation_perso_HUD{
-    0%{
-        margin-top:0px;
-        margin-left:-1%;
-    }
-    25%{
-        margin-top:-4px;
-        margin-left:0px;
-    }
-    50%{
-        margin-top:0px;
-        margin-left:1%
-    }
-    75%{
-        margin-top:-4px;
-        margin-left:0px;
-    }
-    100%{
-        margin-top:0px;
-        margin-left:-1%;
     }
 }
 
