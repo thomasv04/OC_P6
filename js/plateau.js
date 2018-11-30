@@ -78,8 +78,6 @@ class Plateau {
         $('.speed').append('<div class="objet"><img src="img/speed.png" alt=""></div>');
         $('.plateau').append('<div class="HUD_perso1"><img src="img/perso12.png" alt=""></div>');
         $('.plateau').append('<div class="HUD_perso2"><img src="img/perso5.png" alt=""></div>');
-        $('.case27').removeClass('mur').addClass('not_mur');
-        $('.case144').removeClass('mur').addClass('not_mur');
         $('.objet').css('height', $('.case1').height() + 'px');
 
 
@@ -137,6 +135,8 @@ class Plateau {
 
         $('.casePos' + id_case_p1).append('<div class="perso1"><img src="img/perso12.png" alt=""></div>');
         $('.casePos' + id_case_p2).append('<div class="perso2"><img src="img/perso5.png" alt=""></div>');
+        $('.casePos' + id_case_p1).removeClass('mur').addClass('not_mur');
+        $('.casePos' + id_case_p2).removeClass('mur').addClass('not_mur');
 
         $('.perso1 img').css('height', $('.case1').height() + 'px');
         $('.perso2 img').css('height', $('.case1').height() + 'px');
