@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background: #1B1317;
+    image-rendering: pixelated;
+
+}
+
+h1 {
+    text-align: center;
+    padding-top: 10%;
+    font-size: 3vw;
+    color: white;
+    background: #1B1317;
+
+}
+
+.persos {
+    position: absolute;
+    height: auto;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    align-content: space-around;
+    align-items: center;
+
+}
+
+.perso {
+    width: 50px;
+    height: 50px;
+    border: 3px solid transparent;
+    padding: 7px;
+}
+
+.perso img:hover {
+    animation: animation_perso 1.3s infinite;
+    animation-timing-function: ease-out;
+}
+
+.perso img {
+    width: auto;
+    height: 50px;
+
+}
+
+.j1 img,
+.j2 img {
+    animation: animation_perso 1.3s infinite;
+    animation-timing-function: ease-out;
+}
+
+
+.j1 {
+    border-color: #0080ff;
+    position: relative;
+
+}
+
+.j2 {
+    border-color: #ff003b;
+    position: relative;
+}
+
+.j1:before,
+.j2:before {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+.j1:before {
+    content: 'J1';
+    color: #0080ff;
+}
+
+.j2:before {
+    content: 'J2';
+    color: #ff003b;
+}
+
+@keyframes animation_perso {
+    0% {
+        margin-top: 0px;
+        margin-left: -4%;
+    }
+
+    25% {
+        margin-top: -6px;
+        margin-left: 0px;
+    }
+
+    50% {
+        margin-top: 0px;
+        margin-left: 4%
+    }
+
+    75% {
+        margin-top: -6px;
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-top: 0px;
+        margin-left: -4%;
+    }
+}
