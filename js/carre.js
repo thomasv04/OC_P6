@@ -11,7 +11,7 @@ class Carre {
         this.mur = null;
     }
 
-    init(id, taille, espace, posX, posY, occupee, arme, mur, heal, speed, poison, shield) {
+    init(id, taille, espace, posX, posY, occupee, arme, mur, heal, speed, poison, shield, antidote) {
         this.id = id;
         this.taille = taille;
         this.espace = espace;
