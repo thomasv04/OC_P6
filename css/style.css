@@ -9,6 +9,7 @@ body {
     height: 100vh;
     position: relative;
     background: #1B1317;
+    image-rendering: pixelated;
 
 }
 
@@ -34,10 +35,10 @@ h1 {
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-start;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    image-rendering: pixelated;
+
 }
 
 .case {
@@ -48,6 +49,7 @@ h1 {
     font-size: 10px;
     color: grey;
     position: relative;
+    z-index: 50;
 }
 
 .bones {
@@ -72,11 +74,6 @@ h1 {
 
 .crack {
     background: url(../img/crack.png) no-repeat;
-    background-size: cover;
-}
-
-.gold {
-    background: url(../img/gold.png) no-repeat;
     background-size: cover;
 }
 
@@ -119,17 +116,28 @@ h1 {
 
 .not_mur:hover {}
 
-.perso1 {
+.perso {
+    display: block;
+    height: 100%;
+    width: 100%;
     position: relative;
 }
 
+.perso1 {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
 .perso1 img {
+    display: block;
     width: auto;
     position: absolute;
-    top: 0%;
+    top: 50%;
     margin-top: -0px;
+    height: 80%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     animation: animation_perso 1.3s infinite;
     animation-timing-function: ease-out;
 
@@ -185,62 +193,48 @@ h1 {
 }
 
 
-
-.perso1:before {
-    content: '100 \2764';
-    position: absolute;
-    background: white;
-    padding: 1px 0px;
-    font-size: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    width: 90%;
-    top: -5px;
-    left: 1px;
-    opacity: 0;
-    transition: all .3s;
-    color: #c60101;
-}
-
-.perso1:hover:before {
-    opacity: 1;
-    top: -15px;
-}
-
 .perso2 img {
+    display: block;
     width: auto;
     position: absolute;
-    top: 0%;
+    top: 50%;
     margin-top: -0px;
+    height: 80%;
     left: 50%;
-    transform: scaleX(-1) translateX(50%);
-    /**animation:animation_perso 1.3s infinite;
-    animation-timing-function: ease-out;**/
+    transform: translate(-50%, -50%);
+    /*animation: animation_perso 1.3s infinite;
+    animation-timing-function: ease-out;*/
 }
 
 .perso2 {
     position: relative;
+    height: 100%;
+    width: 100%;
 }
 
-.perso2:before {
-    content: '100 \2764';
+
+.HUD_player {
     position: absolute;
     background: white;
-    padding: 1px 0px;
-    font-size: 10px;
+    padding: 2px 2px;
+    font-size: 100%;
     border-radius: 5px;
     font-weight: bold;
     text-align: center;
-    width: 90%;
+    width: auto;
     top: -5px;
-    left: 1px;
+    left: 50%;
+
+    transform: translateX(-50%);
     opacity: 0;
     transition: all .3s;
-    color: #c60101;
+    color: #016bc6;
+    z-index: 999;
+    white-space: nowrap;
 }
 
-.perso2:hover:before {
+.perso1:hover .HUD_player,
+.perso2:hover .HUD_player {
     opacity: 1;
     top: -20px;
 }
@@ -268,115 +262,63 @@ h1 {
     animation-timing-function: ease-out;
 }
 
-.shield:before {
-    content: '+10 🛡️';
+.arme img {
+    height: 80%;
+    animation-delay: 1s;
+}
+
+.HUD_potion {
     position: absolute;
     background: white;
-    padding: 1px 0px;
-    font-size: 10px;
+    padding: 1px 2px;
+    font-size: 100%;
     border-radius: 5px;
     font-weight: bold;
     text-align: center;
-    width: 90%;
+    width: auto;
     top: -5px;
-    left: 1px;
+    left: 50%;
+
+    transform: translateX(-50%);
     opacity: 0;
     transition: all .3s;
     color: #016bc6;
+    z-index: 999;
+    white-space: nowrap;
 }
 
-.shield:hover:before {
+.objet:hover .HUD_potion {
     opacity: 1;
-    top: -10px;
+    top: -15px;
 }
 
-.heal:before {
-    content: '+20 \2764';
+.HUD_arme {
     position: absolute;
-    background: white;
-    padding: 1px 0px;
-    font-size: 10px;
+    background: black;
+    padding: 2px 2px;
+    font-size: 100%;
     border-radius: 5px;
     font-weight: bold;
     text-align: center;
-    width: 90%;
+    width: auto;
     top: -5px;
-    left: 1px;
+    left: 50%;
+
+    transform: translateX(-50%);
     opacity: 0;
     transition: all .3s;
-    color: #c60101;
+    color: #016bc6;
+    z-index: 999;
+    white-space: nowrap;
 }
 
-.heal:hover:before {
+.objet:hover .HUD_arme {
     opacity: 1;
-    top: -10px;
+    top: -15px;
 }
 
-.poison:before {
-    content: '-5 \2764 /tour';
-    position: absolute;
-    background: white;
-    padding: 1px 0px;
-    font-size: 7px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    width: 90%;
-    top: -5px;
-    left: 1px;
-    opacity: 0;
-    transition: all .3s;
-    color: #a05aff;
-}
 
-.poison:hover:before {
-    opacity: 1;
-    top: -10px;
-}
 
-.speed:before {
-    content: '+2 PM';
-    position: absolute;
-    background: white;
-    padding: 1px 0px;
-    font-size: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    width: 90%;
-    top: -5px;
-    left: 1px;
-    opacity: 0;
-    transition: all .3s;
-    color: #e08a14;
-}
-
-.speed:hover:before {
-    opacity: 1;
-    top: -10px;
-}
-
-.antidote:before {
-    content: 'Antidote';
-    position: absolute;
-    background: white;
-    padding: 1px 0px;
-    font-size: 7px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    width: 90%;
-    top: -5px;
-    left: 1px;
-    opacity: 0;
-    transition: all .3s;
-    color: #649438;
-}
-
-.antidote:hover:before {
-    opacity: 1;
-    top: -10px;
-}
 
 .sword {
     height: 100%;
@@ -417,3 +359,7 @@ h1 {
     opacity: 1;
     top: -15px;
 }
+
+/**.protection {
+background: red !important;
+}**/

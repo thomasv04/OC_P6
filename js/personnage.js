@@ -12,15 +12,18 @@ class Personnage {
 
     }
 
-    init(id, hp, shield, pm, skin, arme, position_x, position_y) {
+    //init(id, skin, position_x, position_y) {
+    init(id, skin, x, y) {
         this.id = id;
-        this.hp = hp;
-        this.shield = shield;
-        this.pm = pm;
+        this.hp = 100;
+        this.shield = 0;
+        this.x = x;
+        this.y = y;
+        this.pm = 3;
         this.skin = skin;
-        this.arme = arme;
-        this.position_x = position_x;
-        this.position_y = position_y;
+        this.arme = 10;
+        //this.position_x = position_x;
+        //this.position_y = position_y;
 
     }
 
@@ -43,6 +46,14 @@ class Personnage {
 
     updateArme(NewArme) {
         this.arme = NewArme;
+    }
+
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
     }
 
 
