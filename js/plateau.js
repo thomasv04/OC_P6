@@ -9,6 +9,7 @@ class Plateau {
         this.potions = null;
         this.armes = null;
         this.perso = null;
+        this.tour = null;
 
     }
 
@@ -27,7 +28,7 @@ class Plateau {
             }
         }
 
-
+        this.tour = 1;
 
 
 
@@ -45,7 +46,6 @@ class Plateau {
         this.creationPotions();
         this.creationWeapon();
         this.creationPersonnage();
-
         this.creationPerso2();
 
 
@@ -239,7 +239,11 @@ class Plateau {
 
                         $('.case:nth-child(' + nb + ').perso').append('<div class="perso1"><div class="HUD_player">' + this.perso[1].hp + ' ❤️</div><img src="img/' + this.perso[1].skin + '" alt=""></div>')
                         this.creationProtection();
-                        this.creationZoneDeplacementP1();
+                        if (this.tour === 1) {
+                            this.creationZoneDeplacementP1();
+
+                        }
+
                     }
 
                 }
@@ -326,8 +330,13 @@ class Plateau {
                             $('.case:nth-child(' + nb + ')').addClass('perso');
 
                             $('.case:nth-child(' + nb + ').perso').append('<div class="perso2"><div class="HUD_player">' + this.perso[2].hp + ' ❤️</div><img src="img/' + this.perso[2].skin + '" alt=""></div>');
-                            this.creationZoneDeplacementP2()
+
                             $('.protection').removeClass('protection');
+                            if (this.tour === 2) {
+                                this.creationZoneDeplacementP2();
+
+                            }
+
                         }
 
                     }
@@ -366,41 +375,46 @@ class Plateau {
 
         for (let x = PosXJ1 + 1; x < PosXJ1 + this.perso[1].pm + 1; x++) {
             let nb = (x * this.nb_cases_x) + PosYJ1 + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 bas');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
+            }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1');
             }
 
         }
 
         for (let x = PosXJ1 - 1; x > PosXJ1 - this.perso[1].pm - 1; x--) {
             let nb = (x * this.nb_cases_x) + PosYJ1 + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 haut');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
+            }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1');
             }
         }
 
         for (let y = PosYJ1 + 1; y < PosYJ1 + this.perso[1].pm + 1; y++) {
             let nb = (PosXJ1 * this.nb_cases_x) + y + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 droite');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
+            }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1');
             }
         }
 
         for (let y = PosYJ1 - 1; y > PosYJ1 - this.perso[1].pm - 1; y--) {
             let nb = (PosXJ1 * this.nb_cases_x) + y + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 gauche');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
             }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1');
+            }
+
         }
-        this.deplacementPerso();
+        this.deplacementPerso1();
 
     }
 
@@ -415,79 +429,96 @@ class Plateau {
 
         for (let x = PosXJ2 + 1; x < PosXJ2 + this.perso[2].pm + 1; x++) {
             let nb = (x * this.nb_cases_x) + PosYJ2 + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 bas');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
             }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2');
+            }
+
+
         }
 
         for (let x = PosXJ2 - 1; x > PosXJ2 - this.perso[2].pm - 1; x--) {
             let nb = (x * this.nb_cases_x) + PosYJ2 + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 haut');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
+            }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2');
             }
         }
 
         for (let y = PosYJ2 + 1; y < PosYJ2 + this.perso[2].pm + 1; y++) {
             let nb = (PosXJ2 * this.nb_cases_x) + y + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 droite');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
             }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2');
+            }
+
         }
 
         for (let y = PosYJ2 - 1; y > PosYJ2 - this.perso[2].pm - 1; y--) {
             let nb = (PosXJ2 * this.nb_cases_x) + y + 1;
-            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
-                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 gauche');
-            } else {
+            if ($('.case:nth-child(' + nb + ')').hasClass('mur') || $('.case:nth-child(' + nb + ')').hasClass('perso')) {
                 break;
             }
-        }
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2');
+            }
 
-        this.deplacementPerso();
+        }
+        this.deplacementPerso2();
 
 
     }
 
-    deplacementPerso() {
-        $('.deplacement').click(function () {
-            var nb_case = $(this).index() + 1;
-            //alert(nb_case);
+    deplacementPerso1() {
+        $('.deplacementP2').css('pointer-events', 'none');
+        $('.deplacementP1').css('pointer-events', 'auto');
 
-            if ($(this).hasClass("deplacementP1")) {
+
+        //alert(nb_case);
+        $('.deplacementP1').click(function () {
+            if (plateau.tour === 1) {
+                var nb_case = $(this).index() + 1;
                 $('.perso1').parent().removeClass("perso");
-                $('.perso1').parent().html('');
+                $('.perso1').remove();
                 $('.deplacementP1').removeClass('deplacement');
-                $('.deplacementP1').removeClass('haut');
-                $('.deplacementP1').removeClass('gauche');
-                $('.deplacementP1').removeClass('droite');
-                $('.deplacementP1').removeClass('bas');
                 $('.case').removeClass('deplacementP1');
 
 
-                $('.case:nth-child(' + nb_case + ')').addClass('perso');
+                $('.case:nth-child(' + nb_case + ')').addClass('perso').append('<div class="perso1"><div class="HUD_player">' + plateau.perso[1].hp + ' ❤️</div><img src="img/' + plateau.perso[1].skin + '" alt=""></div>');
 
-                $('.case:nth-child(' + nb_case + ').perso').append('<div class="perso1"><div class="HUD_player">' + plateau.perso[1].hp + ' ❤️</div><img src="img/' + plateau.perso[1].skin + '" alt=""></div>');
+                //$('.case:nth-child(' + nb_case + ').perso');
 
                 let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
                 let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
 
                 plateau.perso[1].updatePosition(nouveauX, nouveauY);
-                plateau.creationZoneDeplacementP1();
-            } else {
 
+                plateau.tour = 2;
+                plateau.creationZoneDeplacementP2();
+            }
+        })
+
+
+
+    }
+
+    deplacementPerso2() {
+        //alert(nb_case);
+        $('.deplacementP1').css('pointer-events', 'none');
+        $('.deplacementP2').css('pointer-events', 'auto');
+
+        $('.deplacementP2').click(function () {
+            if (plateau.tour === 2) {
+                var nb_case = $(this).index() + 1;
                 $('.perso2').parent().removeClass("perso");
-                $('.perso2').parent().html('');
+                $('.perso2').remove();
                 $('.deplacementP2').removeClass('deplacement');
-                $('.deplacementP2').removeClass('haut');
-                $('.deplacementP2').removeClass('gauche');
-                $('.deplacementP2').removeClass('droite');
-                $('.deplacementP2').removeClass('bas');
                 $('.case').removeClass('deplacementP2');
 
 
@@ -499,13 +530,17 @@ class Plateau {
                 let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
 
                 plateau.perso[2].updatePosition(nouveauX, nouveauY);
-                plateau.creationZoneDeplacementP2();
+
+                plateau.tour = 1;
+                plateau.creationZoneDeplacementP1();
+
+
+
             }
-
-            this.deplacementPerso();
-
-
         })
+
+
     }
+
 
 }
