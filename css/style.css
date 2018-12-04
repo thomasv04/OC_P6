@@ -48,8 +48,6 @@ h1 {
     margin: auto;
     font-size: 10px;
     color: grey;
-    position: relative;
-    z-index: 50;
 }
 
 .bones {
@@ -360,6 +358,36 @@ h1 {
     top: -15px;
 }
 
-/**.protection {
-background: red !important;
+/**protection {
+    background: red !important;
 }**/
+
+.deplacement {
+    position: relative;
+
+}
+
+.deplacement:after {
+    content: '';
+    display: block;
+    width: 80%;
+    height: 80%;
+    background: rgba(128, 128, 128, 0.1);
+    border-radius: 50%;
+    border: 2px solid rgba(128, 128, 128, 0.2);
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.deplacement:hover:after {
+    border-color: rgba(128, 128, 128, 0.5)
+}
+
+.deplacement:hover .objet div {
+    opacity: 1;
+    top: -15px;
+}

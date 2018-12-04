@@ -40,8 +40,8 @@ class Personnage {
     }
 
     updatePosition(posX, posY) {
-        this.position_x = posX;
-        this.position_y = posY;
+        this.x = posX;
+        this.y = posY;
     }
 
     updateArme(NewArme) {

@@ -46,5 +46,13 @@ class Cellule {
         return this.taille;
     }
 
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
 
 }

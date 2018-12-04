@@ -5,6 +5,10 @@ class Plateau {
         this.nb_cases_x = null;
         this.ecart_perso = null;
         //this.taille = null;
+        this.cellules = null;
+        this.potions = null;
+        this.armes = null;
+        this.perso = null;
 
     }
 
@@ -44,6 +48,9 @@ class Plateau {
 
         this.creationPerso2();
 
+
+        //this.perso[1].updatePosition(5, 5)
+
     }
 
     creationCellules() {
@@ -64,7 +71,7 @@ class Plateau {
                 var creation_div = document.createElement('div');
                 $(this.div).append(creation_div);
                 $(this.div + ' div').addClass('case');
-                //$('.case:nth-child(' + nb + ')').html(i + '+' + j);
+                //$('.case:nth-child(' + nb + ')').html(nb);
             }
         }
 
@@ -232,6 +239,7 @@ class Plateau {
 
                         $('.case:nth-child(' + nb + ').perso').append('<div class="perso1"><div class="HUD_player">' + this.perso[1].hp + ' ❤️</div><img src="img/' + this.perso[1].skin + '" alt=""></div>')
                         this.creationProtection();
+                        this.creationZoneDeplacementP1();
                     }
 
                 }
@@ -261,8 +269,8 @@ class Plateau {
         var fin_i = this.perso[1].x + this.ecart_perso;
         var fin_j = this.perso[1].y + this.ecart_perso;
 
-        console.log(fin_i);
-        console.log(fin_j);
+        //console.log(fin_i);
+        //console.log(fin_j);
 
         if (i_ecart < 0) {
             i_ecart = 0;
@@ -280,8 +288,8 @@ class Plateau {
             fin_j = this.nb_cases_x - 1;
         }
 
-        console.log(fin_i);
-        console.log(fin_j);
+        //console.log(fin_i);
+        //console.log(fin_j);
 
         for (var i = i_ecart; i < fin_i + 1; i++) {
             /**if (i > 0) {
@@ -303,11 +311,11 @@ class Plateau {
         let total_cases = this.nb_cases_x - 2;
         let Posx = parseInt(Math.random() * (total_cases - 1) + 1);
         let Posy = parseInt(Math.random() * (total_cases - 1) + 1);
-        console.log('Posx ' + Posx);
-        console.log('Posy ' + Posy);
+        //console.log('Posx ' + Posx);
+        //console.log('Posy ' + Posy);
         let nb = (Posx * this.nb_cases_x) + Posy + 1;
         if (!$('.case:nth-child(' + nb + ')').hasClass('protection')) {
-            console.log("oui")
+            //console.log("oui")
             if (this.cellules[Posx][Posy].mur == false) {
                 if (this.cellules[Posx][Posy].potion == false) {
                     if (this.cellules[Posx][Posy].arme == false) {
@@ -317,7 +325,9 @@ class Plateau {
                         if ($('.perso2').length == 0) {
                             $('.case:nth-child(' + nb + ')').addClass('perso');
 
-                            $('.case:nth-child(' + nb + ').perso').append('<div class="perso2"><div class="HUD_player">' + this.perso[2].hp + ' ❤️</div><img src="img/' + this.perso[2].skin + '" alt=""></div>')
+                            $('.case:nth-child(' + nb + ').perso').append('<div class="perso2"><div class="HUD_player">' + this.perso[2].hp + ' ❤️</div><img src="img/' + this.perso[2].skin + '" alt=""></div>');
+                            this.creationZoneDeplacementP2()
+                            $('.protection').removeClass('protection');
                         }
 
                     }
@@ -343,6 +353,159 @@ class Plateau {
         }
 
 
+    }
+
+    creationZoneDeplacementP1() {
+        let PosXJ1 = this.perso[1].x;
+        let PosYJ1 = this.perso[1].y;
+
+        /**for (let x = PosXJ1; x < PosXJ1 + this.perso[1].pm; x++) {
+            console.log(this.cellules[x][PosYJ1].id);
+            $('.case:nth-child(' + this.cellules[x][PosYJ1].id + ')').addClass('up');
+        }**/
+
+        for (let x = PosXJ1 + 1; x < PosXJ1 + this.perso[1].pm + 1; x++) {
+            let nb = (x * this.nb_cases_x) + PosYJ1 + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 bas');
+            } else {
+                break;
+            }
+
+        }
+
+        for (let x = PosXJ1 - 1; x > PosXJ1 - this.perso[1].pm - 1; x--) {
+            let nb = (x * this.nb_cases_x) + PosYJ1 + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 haut');
+            } else {
+                break;
+            }
+        }
+
+        for (let y = PosYJ1 + 1; y < PosYJ1 + this.perso[1].pm + 1; y++) {
+            let nb = (PosXJ1 * this.nb_cases_x) + y + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 droite');
+            } else {
+                break;
+            }
+        }
+
+        for (let y = PosYJ1 - 1; y > PosYJ1 - this.perso[1].pm - 1; y--) {
+            let nb = (PosXJ1 * this.nb_cases_x) + y + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP1 gauche');
+            } else {
+                break;
+            }
+        }
+        this.deplacementPerso();
+
+    }
+
+    creationZoneDeplacementP2() {
+        let PosXJ2 = this.perso[2].x;
+        let PosYJ2 = this.perso[2].y;
+
+        /**for (let x = PosXJ1; x < PosXJ1 + this.perso[1].pm; x++) {
+            console.log(this.cellules[x][PosYJ1].id);
+            $('.case:nth-child(' + this.cellules[x][PosYJ1].id + ')').addClass('up');
+        }**/
+
+        for (let x = PosXJ2 + 1; x < PosXJ2 + this.perso[2].pm + 1; x++) {
+            let nb = (x * this.nb_cases_x) + PosYJ2 + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 bas');
+            } else {
+                break;
+            }
+        }
+
+        for (let x = PosXJ2 - 1; x > PosXJ2 - this.perso[2].pm - 1; x--) {
+            let nb = (x * this.nb_cases_x) + PosYJ2 + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 haut');
+            } else {
+                break;
+            }
+        }
+
+        for (let y = PosYJ2 + 1; y < PosYJ2 + this.perso[2].pm + 1; y++) {
+            let nb = (PosXJ2 * this.nb_cases_x) + y + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 droite');
+            } else {
+                break;
+            }
+        }
+
+        for (let y = PosYJ2 - 1; y > PosYJ2 - this.perso[2].pm - 1; y--) {
+            let nb = (PosXJ2 * this.nb_cases_x) + y + 1;
+            if (!$('.case:nth-child(' + nb + ')').hasClass('mur')) {
+                $('.case:nth-child(' + nb + ')').addClass('deplacement deplacementP2 gauche');
+            } else {
+                break;
+            }
+        }
+
+        this.deplacementPerso();
+
+
+    }
+
+    deplacementPerso() {
+        $('.deplacement').click(function () {
+            var nb_case = $(this).index() + 1;
+            //alert(nb_case);
+
+            if ($(this).hasClass("deplacementP1")) {
+                $('.perso1').parent().removeClass("perso");
+                $('.perso1').parent().html('');
+                $('.deplacementP1').removeClass('deplacement');
+                $('.deplacementP1').removeClass('haut');
+                $('.deplacementP1').removeClass('gauche');
+                $('.deplacementP1').removeClass('droite');
+                $('.deplacementP1').removeClass('bas');
+                $('.case').removeClass('deplacementP1');
+
+
+                $('.case:nth-child(' + nb_case + ')').addClass('perso');
+
+                $('.case:nth-child(' + nb_case + ').perso').append('<div class="perso1"><div class="HUD_player">' + plateau.perso[1].hp + ' ❤️</div><img src="img/' + plateau.perso[1].skin + '" alt=""></div>');
+
+                let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
+                let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
+
+                plateau.perso[1].updatePosition(nouveauX, nouveauY);
+                plateau.creationZoneDeplacementP1();
+            } else {
+
+                $('.perso2').parent().removeClass("perso");
+                $('.perso2').parent().html('');
+                $('.deplacementP2').removeClass('deplacement');
+                $('.deplacementP2').removeClass('haut');
+                $('.deplacementP2').removeClass('gauche');
+                $('.deplacementP2').removeClass('droite');
+                $('.deplacementP2').removeClass('bas');
+                $('.case').removeClass('deplacementP2');
+
+
+                $('.case:nth-child(' + nb_case + ')').addClass('perso');
+
+                $('.case:nth-child(' + nb_case + ').perso').append('<div class="perso2"><div class="HUD_player">' + plateau.perso[2].hp + ' ❤️</div><img src="img/' + plateau.perso[2].skin + '" alt=""></div>');
+
+                let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
+                let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
+
+                plateau.perso[2].updatePosition(nouveauX, nouveauY);
+                plateau.creationZoneDeplacementP2();
+            }
+
+            this.deplacementPerso();
+
+
+        })
     }
 
 }
