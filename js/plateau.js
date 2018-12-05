@@ -39,6 +39,7 @@ class Plateau {
         this.armes = [];
         this.perso = [];
 
+
         this.creationCellules();
         this.affichageCellules();
         this.ajoutDecor();
@@ -47,10 +48,56 @@ class Plateau {
         this.creationWeapon();
         this.creationPersonnage();
         this.creationPerso2();
+        this.creationHUD();
 
 
         //this.perso[1].updatePosition(5, 5)
 
+    }
+
+    creationHUD() {
+        $('body').append('<div class="HUDP1"></div><div class="HUDP2"></div>');
+        $('.HUDP1').append('<div class="image"><img src="img/' + this.perso[1].skin + '" alt=""><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP2').append('<div class="image"><img src="img/' + this.perso[2].skin + '" alt=""><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP1').append('<div class="information"></div>');
+        $('.HUDP2').append('<div class="information"></div>');
+        $('.HUDP1 .information').append('<div class="vie">' + this.perso[1].hp + ' ❤️</div>');
+        $('.HUDP2 .information').append('<div class="vie">' + this.perso[2].hp + ' ❤️</div>');
+        $('.HUDP1 .information').append('<div class="shield">0 🛡️</div>');
+        $('.HUDP2 .information').append('<div class="shield">0 🛡️</div>');
+        $('.HUDP1 .information').append('<div class="damage">10 ⚔️</div>');
+        $('.HUDP2 .information').append('<div class="damage">10 ⚔️</div>');
+        $('.inventaire').append('<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>');
+
+        $('.HUDP1 .chest').click(function () {
+            $('.HUDP1 .inventaire').toggleClass('inventaire_active');
+        })
+
+        $('.HUDP2 .chest').click(function () {
+            $('.HUDP2 .inventaire').toggleClass('inventaire_active');
+        })
+    }
+
+    HUDUpdateArme(P1, skin, deg) {
+        $('.HUD' + P1 + ' .image img:nth-child(2)').remove();
+        $('.HUD' + P1 + ' .image').append('<img src="img/' + skin + '" alt="">');
+        $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
+    }
+
+    HUDUpdateVie(perso) {
+        $('.HUDP' + perso + ' .vie').html(this.perso[perso].hp + ' ❤️');
+    }
+
+    HUDUpdateShield(perso) {
+        $('.HUDP' + perso + ' .shield').html(this.perso[perso].shield + ' 🛡️');
+    }
+
+    HUDUpdateInventaire(perso, potion) {
+        let nouvelle_potion_id = $('.HUDP' + perso + ' .inventaire .potion').length + 1;
+        $('.HUDP' + perso + ' .inventaire div:nth-child(' + nouvelle_potion_id + ')').html('<img src="img/' + potion.skin + '" alt="">');
+        $('.HUDP' + perso + ' .inventaire div:nth-child(' + nouvelle_potion_id + ')').addClass('potion');
+        this.perso[perso].inventaire[nouvelle_potion_id] = potion.type;
+        console.log(this.perso[perso].inventaire);
     }
 
     creationCellules() {
@@ -165,9 +212,8 @@ class Plateau {
     }
 
     creationPotions() {
-        let k = 1;
         for (let i = 0; i < this.nb_cases_x; i++) {
-
+            this.potions[i] = [];
             for (let j = 0; j < this.nb_cases_x; j++) {
                 let nb = (i * this.nb_cases_x) + j + 1;
 
@@ -175,11 +221,10 @@ class Plateau {
 
                     let type_potion = parseInt(Math.random() * (5.1 - 1) + 1);
 
-                    this.potions[k] = new Potion();
-                    this.potions[k].init(k, type_potion);
+                    this.potions[i][j] = new Potion();
+                    this.potions[i][j].init('' + i + '' + j, type_potion);
                     $('.case:nth-child(' + nb + ')').addClass('potion');
-                    $('.case:nth-child(' + nb + ').potion').append('<div class="objet"><div class="HUD_potion">' + this.potions[k].effet + '</div><img src="img/' + this.potions[k].skin + '" alt=""></div>')
-                    k++;
+                    $('.case:nth-child(' + nb + ').potion').append('<div class="objet"><div class="HUD_potion">' + this.potions[i][j].effet + '</div><img src="img/' + this.potions[i][j].skin + '" alt=""></div>')
                 }
 
 
@@ -189,28 +234,27 @@ class Plateau {
     }
 
     creationWeapon() {
-        let l = 1;
         for (let i = 0; i < this.nb_cases_x; i++) {
-
+            this.armes[i] = [];
             for (let j = 0; j < this.nb_cases_x; j++) {
                 let nb = (i * this.nb_cases_x) + j + 1;
 
                 if (this.cellules[i][j].arme) {
 
-                    if (l < 5) {
-                        let type_arme = parseInt(Math.random() * (8.1 - 1) + 1);
+                    if ($('.arme').length < 4) {
+                        let type_arme = parseInt(Math.random() * (8.1 - 2) + 2);
 
-                        this.armes[l] = new Weapon();
-                        this.armes[l].init(l, type_arme);
+
+
+                        this.armes[i][j] = new Weapon();
+                        this.armes[i][j].init('' + i + '' + j, type_arme);
                         $('.case:nth-child(' + nb + ')').addClass('arme');
-                        $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">' + this.armes[l].puissance + ' ⚔️</div><img src="img/' + this.armes[l].skin + '" alt=""></div>')
+                        $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">' + this.armes[i][j].puissance + ' ⚔️</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
 
-                        l++;
                     }
 
 
                 }
-
 
 
             }
@@ -234,6 +278,7 @@ class Plateau {
                     //console.log("Perso pas dans mur");
                     this.perso[1] = new Personnage();
                     this.perso[1].init(1, "perso8.png", Posx, Posy);
+                    this.perso[1].hp = 24;
                     if ($('.perso').length == 0) {
                         $('.case:nth-child(' + nb + ')').addClass('perso');
 
@@ -241,6 +286,7 @@ class Plateau {
                         this.creationProtection();
                         if (this.tour === 1) {
                             this.creationZoneDeplacementP1();
+                            $('.perso1 img').addClass('animation_perso');
 
                         }
 
@@ -326,16 +372,14 @@ class Plateau {
                         //console.log("Perso pas dans mur");
                         this.perso[2] = new Personnage();
                         this.perso[2].init(2, "perso6.png", Posx, Posy);
+                        this.perso[2].hp = 48;
                         if ($('.perso2').length == 0) {
                             $('.case:nth-child(' + nb + ')').addClass('perso');
 
                             $('.case:nth-child(' + nb + ').perso').append('<div class="perso2"><div class="HUD_player">' + this.perso[2].hp + ' ❤️</div><img src="img/' + this.perso[2].skin + '" alt=""></div>');
 
                             $('.protection').removeClass('protection');
-                            if (this.tour === 2) {
-                                this.creationZoneDeplacementP2();
 
-                            }
 
                         }
 
@@ -476,31 +520,47 @@ class Plateau {
     }
 
     deplacementPerso1() {
-        $('.deplacementP2').css('pointer-events', 'none');
-        $('.deplacementP1').css('pointer-events', 'auto');
-
 
         //alert(nb_case);
         $('.deplacementP1').click(function () {
             if (plateau.tour === 1) {
-                var nb_case = $(this).index() + 1;
-                $('.perso1').parent().removeClass("perso");
-                $('.perso1').remove();
-                $('.deplacementP1').removeClass('deplacement');
-                $('.case').removeClass('deplacementP1');
+                if ($(this).hasClass('deplacementP1')) {
+                    var nb_case_actuelle = (plateau.perso[1].x * plateau.nb_cases_x) + plateau.perso[1].y + 1;
+                    var nb_case = $(this).index() + 1;
+                    let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
+                    let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
+
+                    if ($('.case:nth-child(' + nb_case + ')').hasClass('arme') || $('.case:nth-child(' + nb_case + ')').hasClass('potion')) {
+                        if ($('.case:nth-child(' + nb_case + ')').hasClass('potion')) {
+                            plateau.recupererPotion(nb_case, nouveauX, nouveauY);
+                        }
+                        if ($('.case:nth-child(' + nb_case + ')').hasClass('arme')) {
+                            plateau.recupererArme(nb_case, nouveauX, nouveauY);
+
+                        }
+
+                    }
+                    if ($('.case:nth-child(' + nb_case_actuelle + ')').hasClass('arme')) {
+                        $('.case:nth-child(' + nb_case_actuelle + ') .objet').css('display', 'block');
+                    }
+
+                    $('.perso1').parent().removeClass("perso");
+                    $('.perso1').remove();
+                    $('.deplacement').removeClass('deplacementP1');
+                    $('.deplacement').removeClass('deplacement');
+
+                    $('.case:nth-child(' + nb_case + ')').addClass('perso').append('<div class="perso1"><div class="HUD_player">' + plateau.perso[1].hp + ' ❤️</div><img src="img/' + plateau.perso[1].skin + '" alt=""></div>');
+
+                    //$('.case:nth-child(' + nb_case + ').perso');
 
 
-                $('.case:nth-child(' + nb_case + ')').addClass('perso').append('<div class="perso1"><div class="HUD_player">' + plateau.perso[1].hp + ' ❤️</div><img src="img/' + plateau.perso[1].skin + '" alt=""></div>');
+                    plateau.perso[1].updatePosition(nouveauX, nouveauY);
 
-                //$('.case:nth-child(' + nb_case + ').perso');
-
-                let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
-                let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
-
-                plateau.perso[1].updatePosition(nouveauX, nouveauY);
-
-                plateau.tour = 2;
-                plateau.creationZoneDeplacementP2();
+                    plateau.tour = 2;
+                    plateau.creationZoneDeplacementP2();
+                    $('.perso1 img').removeClass('animation_perso');
+                    $('.perso2 img').addClass('animation_perso');
+                }
             }
         })
 
@@ -510,37 +570,122 @@ class Plateau {
 
     deplacementPerso2() {
         //alert(nb_case);
-        $('.deplacementP1').css('pointer-events', 'none');
-        $('.deplacementP2').css('pointer-events', 'auto');
-
         $('.deplacementP2').click(function () {
             if (plateau.tour === 2) {
-                var nb_case = $(this).index() + 1;
-                $('.perso2').parent().removeClass("perso");
-                $('.perso2').remove();
-                $('.deplacementP2').removeClass('deplacement');
-                $('.case').removeClass('deplacementP2');
+                if ($(this).hasClass('deplacementP2')) {
+                    var nb_case_actuelle = (plateau.perso[2].x * plateau.nb_cases_x) + plateau.perso[2].y + 1;
+                    var nb_case = $(this).index() + 1;
+                    let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
+                    let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
+
+                    if ($('.case:nth-child(' + nb_case + ')').hasClass('arme') || $('.case:nth-child(' + nb_case + ')').hasClass('potion')) {
+                        if ($('.case:nth-child(' + nb_case + ')').hasClass('potion')) {
+                            plateau.recupererPotion(nb_case, nouveauX, nouveauY);
+
+                        }
+                        if ($('.case:nth-child(' + nb_case + ')').hasClass('arme')) {
+                            plateau.recupererArme(nb_case, nouveauX, nouveauY);
+                        }
+
+                    }
+                    if ($('.case:nth-child(' + nb_case_actuelle + ')').hasClass('arme')) {
+                        $('.case:nth-child(' + nb_case_actuelle + ') .objet').css('display', 'block');
+                    }
+
+                    $('.perso2').parent().removeClass("perso");
+                    $('.perso2').remove();
+                    $('.deplacementP2').removeClass('deplacement');
+                    $('.case').removeClass('deplacementP2');
+
+                    $('.case:nth-child(' + nb_case + ')').addClass('perso');
+
+                    $('.case:nth-child(' + nb_case + ').perso').append('<div class="perso2"><div class="HUD_player">' + plateau.perso[2].hp + ' ❤️</div><img src="img/' + plateau.perso[2].skin + '" alt=""></div>');
 
 
-                $('.case:nth-child(' + nb_case + ')').addClass('perso');
+                    plateau.perso[2].updatePosition(nouveauX, nouveauY);
 
-                $('.case:nth-child(' + nb_case + ').perso').append('<div class="perso2"><div class="HUD_player">' + plateau.perso[2].hp + ' ❤️</div><img src="img/' + plateau.perso[2].skin + '" alt=""></div>');
+                    plateau.tour = 1;
+                    plateau.creationZoneDeplacementP1();
+                    $('.perso1 img').addClass('animation_perso');
+                    $('.perso2 img').removeClass('animation_perso');
 
-                let nouveauX = parseInt(nb_case / plateau.nb_cases_x);
-                let nouveauY = nb_case - ((plateau.nb_cases_x * nouveauX) + 1);
-
-                plateau.perso[2].updatePosition(nouveauX, nouveauY);
-
-                plateau.tour = 1;
-                plateau.creationZoneDeplacementP1();
-
-
+                }
 
             }
         })
 
 
     }
+
+    recupererArme(nb_case, nouveauX, nouveauY) {
+        let nouveau_type_arme_perso = this.armes[nouveauX][nouveauY].type;
+        if (this.tour === 1) {
+            this.HUDUpdateArme("P1", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            this.armes[nouveauX][nouveauY].updateType(this.perso[1].arme);
+        }
+        if (this.tour === 2) {
+            this.HUDUpdateArme("P2", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            this.armes[nouveauX][nouveauY].updateType(this.perso[2].arme);
+        }
+
+
+
+        $('.case:nth-child(' + nb_case + ') .objet').remove();
+        $('.case:nth-child(' + nb_case + ')').append('<div class="objet"><div class="HUD_arme">' + this.armes[nouveauX][nouveauY].puissance + ' ⚔️</div><img src="img/' + this.armes[nouveauX][nouveauY].skin + '" alt=""></div>');
+        $('.case:nth-child(' + nb_case + ') .objet').css('display', 'none');
+
+        if (this.tour === 1) {
+            this.perso[1].updateArme(nouveau_type_arme_perso);
+        }
+        if (this.tour === 2) {
+            this.perso[2].updateArme(nouveau_type_arme_perso);
+        }
+
+
+    }
+
+    recupererPotion(nb_case, nouveauX, nouveauY) {
+        let type_potion = this.potions[nouveauX][nouveauY].type;
+        console.log(type_potion);
+        var nb_perso;
+        if (this.tour === 1) {
+            nb_perso = 1
+        }
+        if (this.tour === 2) {
+            nb_perso = 2
+        }
+        if (type_potion === 1) {
+            this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+        }
+
+        if (type_potion === 2) {
+            let vie = this.perso[nb_perso].hp + 20;
+            if (vie > 100) {
+                vie = 100;
+            }
+            this.perso[nb_perso].hp = vie;
+            this.HUDUpdateVie(nb_perso);
+
+        }
+
+        if (type_potion === 3) {
+            this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+        }
+
+        if (type_potion === 4) {
+            this.perso[nb_perso].shield = this.perso[nb_perso].shield + 10;
+            this.HUDUpdateShield(nb_perso);
+
+        }
+
+        if (type_potion === 5) {
+            this.perso[nb_perso].pm = this.perso[nb_perso].pm + 2;
+
+        }
+        $('.case:nth-child(' + nb_case + ') .objet').css('display', 'none');
+    }
+
+
 
 
 }

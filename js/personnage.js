@@ -9,6 +9,7 @@ class Personnage {
         this.arme = null;
         this.position_x = null;
         this.position_y = null;
+        this.inventaire = null;
 
     }
 
@@ -21,7 +22,8 @@ class Personnage {
         this.y = y;
         this.pm = 3;
         this.skin = skin;
-        this.arme = 10;
+        this.arme = 1;
+        this.inventaire = [];
         //this.position_x = position_x;
         //this.position_y = position_y;
 
