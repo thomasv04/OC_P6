@@ -574,17 +574,17 @@ background: red !important;
 
     .HUDP1 {
         width: 45%;
-        height: 20vh;
+        height: 0vh;
         top: unset;
-        bottom: 1%;
+        bottom: 45%;
         flex-wrap: nowrap;
     }
 
     .HUDP2 {
         width: 45%;
-        height: 20vh;
+        height: 0vh;
         top: unset;
-        bottom: 1%;
+        bottom: 45%;
         display: flex;
         flex-wrap: nowrap;
         justify-content: center;
@@ -645,6 +645,10 @@ background: red !important;
 
     .HUDP2 .inventaire div:nth-child(9) {
         order: 9;
+    }
+
+    .image {
+        top: 0;
     }
 
 

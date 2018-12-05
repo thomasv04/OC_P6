@@ -79,8 +79,7 @@ class Plateau {
     }
 
     HUDUpdateArme(P1, skin, deg) {
-        $('.HUD' + P1 + ' .image img:nth-child(2)').remove();
-        $('.HUD' + P1 + ' .image').append('<img src="img/' + skin + '" alt="">');
+        $('.HUD' + P1 + ' .image img:nth-child(2)').replaceWith('<img src="img/' + skin + '" alt="">');
         $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
     }
 
@@ -277,7 +276,7 @@ class Plateau {
                 if (this.cellules[Posx][Posy].arme == false) {
                     //console.log("Perso pas dans mur");
                     this.perso[1] = new Personnage();
-                    this.perso[1].init(1, "perso8.png", Posx, Posy);
+                    this.perso[1].init(1, "perso4.png", Posx, Posy);
                     this.perso[1].hp = 24;
                     if ($('.perso').length == 0) {
                         $('.case:nth-child(' + nb + ')').addClass('perso');
@@ -371,7 +370,7 @@ class Plateau {
                     if (this.cellules[Posx][Posy].arme == false) {
                         //console.log("Perso pas dans mur");
                         this.perso[2] = new Personnage();
-                        this.perso[2].init(2, "perso6.png", Posx, Posy);
+                        this.perso[2].init(2, "perso10.png", Posx, Posy);
                         this.perso[2].hp = 48;
                         if ($('.perso2').length == 0) {
                             $('.case:nth-child(' + nb + ')').addClass('perso');
