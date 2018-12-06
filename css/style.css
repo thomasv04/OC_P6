@@ -566,6 +566,7 @@ background: red !important;
     animation-delay: 0.2s;
     animation-fill-mode: forwards;
     opacity: 0;
+
 }
 
 .combat .zone_combat {
@@ -802,6 +803,12 @@ background: red !important;
         left: 50%;
         transform: translate(-50%, -10%);
 
+    }
+
+    .combat {
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, -10%);
     }
 
     .HUDP1 {

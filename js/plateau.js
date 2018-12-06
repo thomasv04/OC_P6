@@ -57,8 +57,8 @@ class Plateau {
 
     creationHUD() {
         $('body').append('<div class="HUDP1"></div><div class="HUDP2"></div>');
-        $('.HUDP1').append('<div class="image"><img src="img/' + this.perso[1].skin + '" alt=""><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
-        $('.HUDP2').append('<div class="image"><img src="img/' + this.perso[2].skin + '" alt=""><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP1').append('<div class="image"><img src="img/' + this.perso[1].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP2').append('<div class="image"><img src="img/' + this.perso[2].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
         $('.HUDP1').append('<div class="information"></div>');
         $('.HUDP2').append('<div class="information"></div>');
         $('.HUDP1 .information').append('<div class="vie">' + this.perso[1].hp + ' ❤️</div>');
@@ -736,8 +736,8 @@ class Plateau {
         $('.combat').css('height', $('.plateau').height());
         $('.HUDP1').css('opacity', '0');
         $('.HUDP2').css('opacity', '0');
-        $('.HUDP1 .image img:nth-child(1)').clone().appendTo(".combat_perso1");
-        $('.HUDP2 .image img:nth-child(1)').clone().appendTo(".combat_perso2");
+        $('.HUDP1 .image .image_perso').clone().appendTo(".combat_perso1");
+        $('.HUDP2 .image .image_perso').clone().appendTo(".combat_perso2");
         $('.combat_perso1').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso2').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
