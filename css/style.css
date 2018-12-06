@@ -555,7 +555,239 @@ background: red !important;
 }
 
 
+.combat {
+    position: absolute;
+    background: #462737;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: debut_combat 1.3s;
+    animation-timing-function: ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
 
+.combat .zone_combat {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+}
+
+.combat .zone_combat .combat_perso1 {
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    bottom: 0;
+    left: 0;
+    //background:green;
+}
+
+.combat .zone_combat .combat_perso2 {
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    top: 0;
+    left: 0;
+    //background:blue;
+}
+
+.combat .zone_combat .combat_perso2 img {
+    display: block;
+    margin: auto;
+    float: right;
+    height: 80%;
+    margin-right: 5%;
+    margin-top: 2%;
+    transform: scaleX(-1);
+
+}
+
+.combat .zone_combat .combat_perso1 img {
+    display: block;
+    margin: auto;
+    float: left;
+    height: 80%;
+    margin-left: 5%;
+    margin-top: 3%;
+    transform: scaleX(-1);
+}
+
+@keyframes debut_combat {
+    0% {
+        opacity: 1;
+        background: #f8f8f8;
+    }
+
+    25% {
+        opacity: 1;
+        background: #462737;
+    }
+
+    50% {
+        opacity: 1;
+        background: #f8f8f8;
+    }
+
+    75% {
+        opacity: 1;
+        background: #462737;
+    }
+
+    85% {
+        opacity: 1;
+        background: #f8f8f8;
+    }
+
+    100% {
+        opacity: 1;
+        background: #462737;
+    }
+}
+
+.info {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background: #624253;
+
+}
+
+.armure {
+    height: 40%;
+    background: #624253;
+    border-radius: 10px;
+    position: absolute;
+    top: 5%;
+
+
+}
+
+
+
+.armure p {
+    position: absolute;
+    color: white;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.degat {
+    height: 40%;
+    background: #624253;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+
+
+}
+
+.degat p {
+    position: absolute;
+    color: white;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.combat_perso1 .degat {
+    right: 52%;
+}
+
+.combat_perso2 .degat {
+    left: 52%;
+}
+
+.combat_perso1 .info {
+    display: block;
+    right: 0;
+    bottom: 0;
+    border-top-left-radius: 10px;
+}
+
+.combat_perso2 .info {
+    display: block;
+    left: 0;
+    bottom: 0;
+    border-bottom-right-radius: 10px;
+
+
+}
+
+.combat_perso1 .armure {
+    right: 52%;
+}
+
+.combat_perso2 .armure {
+    left: 52%;
+}
+
+.barre_vie {
+    width: 80%;
+    height: 5%;
+    background: white;
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+
+}
+
+.barre_vie .vie {
+    height: 100%;
+    background: red;
+    border-radius: 5px;
+    margin-left: -1px;
+}
+
+
+.action {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+
+}
+
+.action .bouton {
+    position: relative;
+    width: 40%;
+    background: #795769;
+    height: 20%;
+    margin: auto;
+    padding: auto;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action .bouton:hover {
+    background: #936c81;
+}
+
+.action .bouton p {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+
+}
 
 
 

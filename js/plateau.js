@@ -542,6 +542,21 @@ class Plateau {
                     if ($('.case:nth-child(' + nb_case_actuelle + ')').hasClass('arme')) {
                         $('.case:nth-child(' + nb_case_actuelle + ') .objet').css('display', 'block');
                     }
+                    let test_perso_colle1 = nb_case + 1;
+                    let test_perso_colle2 = nb_case - 1;
+                    let test_perso_colle3 = nb_case + plateau.nb_cases_x;
+                    let test_perso_colle4 = nb_case - plateau.nb_cases_x;
+
+                    if ($('.case:nth-child(' + test_perso_colle1 + ') div').hasClass("perso2")) {
+                        $('.case:nth-child(' + test_perso_colle1 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle2 + ') div').hasClass("perso2")) {
+                        $('.case:nth-child(' + test_perso_colle2 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle3 + ') div').hasClass("perso2")) {
+                        $('.case:nth-child(' + test_perso_colle3 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle4 + ') div').hasClass("perso2")) {
+                        $('.case:nth-child(' + test_perso_colle4 + ')').addClass("perso_colle")
+                    }
+
 
                     $('.perso1').parent().removeClass("perso");
                     $('.perso1').remove();
@@ -554,11 +569,16 @@ class Plateau {
 
 
                     plateau.perso[1].updatePosition(nouveauX, nouveauY);
+                    if ($('.perso_colle').length == 0) {
+                        plateau.creationZoneDeplacementP2();
+                        plateau.tour = 2;
+                        $('.perso1 img').removeClass('animation_perso');
+                        $('.perso2 img').addClass('animation_perso');
+                    } else {
+                        plateau.lancement_combat();
+                    }
 
-                    plateau.tour = 2;
-                    plateau.creationZoneDeplacementP2();
-                    $('.perso1 img').removeClass('animation_perso');
-                    $('.perso2 img').addClass('animation_perso');
+
                 }
             }
         })
@@ -591,6 +611,21 @@ class Plateau {
                         $('.case:nth-child(' + nb_case_actuelle + ') .objet').css('display', 'block');
                     }
 
+                    let test_perso_colle1 = nb_case + 1;
+                    let test_perso_colle2 = nb_case - 1;
+                    let test_perso_colle3 = nb_case + plateau.nb_cases_x;
+                    let test_perso_colle4 = nb_case - plateau.nb_cases_x;
+
+                    if ($('.case:nth-child(' + test_perso_colle1 + ') div').hasClass("perso1")) {
+                        $('.case:nth-child(' + test_perso_colle1 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle2 + ') div').hasClass("perso1")) {
+                        $('.case:nth-child(' + test_perso_colle2 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle3 + ') div').hasClass("perso1")) {
+                        $('.case:nth-child(' + test_perso_colle3 + ')').addClass("perso_colle")
+                    } else if ($('.case:nth-child(' + test_perso_colle4 + ') div').hasClass("perso1")) {
+                        $('.case:nth-child(' + test_perso_colle4 + ')').addClass("perso_colle")
+                    }
+
                     $('.perso2').parent().removeClass("perso");
                     $('.perso2').remove();
                     $('.deplacementP2').removeClass('deplacement');
@@ -603,10 +638,14 @@ class Plateau {
 
                     plateau.perso[2].updatePosition(nouveauX, nouveauY);
 
-                    plateau.tour = 1;
-                    plateau.creationZoneDeplacementP1();
-                    $('.perso1 img').addClass('animation_perso');
-                    $('.perso2 img').removeClass('animation_perso');
+                    if ($('.perso_colle').length == 0) {
+                        plateau.creationZoneDeplacementP1();
+                        plateau.tour = 1;
+                        $('.perso1 img').addClass('animation_perso');
+                        $('.perso2 img').removeClass('animation_perso');
+                    } else {
+                        plateau.lancement_combat();
+                    }
 
                 }
 
@@ -684,7 +723,41 @@ class Plateau {
         $('.case:nth-child(' + nb_case + ') .objet').css('display', 'none');
     }
 
-
+    lancement_combat() {
+        $('.perso1').css('opacity', '0');
+        $('.perso2').css('opacity', '0');
+        $('body').append('<div class="combat"></div>');
+        $('.combat').append('<div class="zone_combat"></div>');
+        $('.zone_combat').append('<div class="combat_perso1"></div>');
+        $('.zone_combat').append('<div class="combat_perso2"></div>');
+        console.log($('.plateau').width())
+        console.log($('.plateau').height())
+        $('.combat').css('width', $('.plateau').width());
+        $('.combat').css('height', $('.plateau').height());
+        $('.HUDP1').css('opacity', '0');
+        $('.HUDP2').css('opacity', '0');
+        $('.HUDP1 .image img:nth-child(1)').clone().appendTo(".combat_perso1");
+        $('.HUDP2 .image img:nth-child(1)').clone().appendTo(".combat_perso2");
+        $('.combat_perso1').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso2').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
+        $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
+        $('.barre_vie').append('<div class="vie"></div>');
+        $('.action').append('<div class="bouton attaque"><p>Attaquer</p></div><div class="bouton defence"><p>Se defendre</p></div><div class="bouton objet_action"><p>Inventaire</p></div><div class="bouton fuite"><p>Fuire</p></div>');
+        let vie_perso1 = this.perso[1].hp;
+        let vie_perso2 = this.perso[2].hp;
+        let armure_perso1 = this.perso[1].shield + ' 🛡️';
+        let armure_perso2 = this.perso[2].shield + ' 🛡️';
+        let degat_perso1 = $('.HUDP1 .damage').html();
+        let degat_perso2 = $('.HUDP2 .damage').html();
+        $('.combat_perso1 .info .barre_vie .vie').css('width', vie_perso1 + '%');
+        $('.combat_perso2 .info .barre_vie .vie').css('width', vie_perso2 + '%');
+        $('.armure').css('width', $('.armure').height() + 'px');
+        $('.degat').css('width', $('.degat').height() + 'px');
+        $('.combat_perso1 .armure').append('<p>' + armure_perso1 + '</p>');
+        $('.combat_perso2 .armure').append('<p>' + armure_perso2 + '</p>');
+        $('.combat_perso1 .degat').append('<p>' + degat_perso1 + '</p>');
+        $('.combat_perso2 .degat').append('<p>' + degat_perso2 + '</p>');
+    }
 
 
 }
