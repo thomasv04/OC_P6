@@ -152,5 +152,39 @@ class Weapon {
         }
     }
 
+    getDegat(type) {
+        if (type == 1) {
+            return "10";
+        }
+
+        if (type == 2) {
+            return "12";
+        }
+
+        if (type == 3) {
+            return "14";
+        }
+
+        if (type == 4) {
+            return "16";
+        }
+
+        if (type == 5) {
+            return "18";
+        }
+
+        if (type == 6) {
+            return "20";
+        }
+
+        if (type == 7) {
+            return "12";
+        }
+
+        if (type == 8) {
+            return "12";
+        }
+    }
+
 
 }

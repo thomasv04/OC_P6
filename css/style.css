@@ -646,7 +646,6 @@ background: red !important;
     margin-top: 2%;
     transform: scaleX(-1);
 
-
 }
 
 .combat .zone_combat .combat_perso1 img {
@@ -657,6 +656,69 @@ background: red !important;
     margin-left: 5%;
     margin-top: 3%;
     transform: scaleX(-1);
+
+}
+
+.animation_combat_p1 {
+    animation: animation_perso_combat_p1 1.3s infinite;
+}
+
+.animation_combat_p2 {
+    animation: animation_perso_combat_p2 1.3s infinite;
+}
+
+@keyframes animation_perso_combat_p1 {
+    0% {
+        margin-top: 2%;
+        margin-left: 0%;
+    }
+
+    25% {
+        margin-top: 0%;
+        margin-left: 1%;
+    }
+
+    50% {
+        margin-top: 2%;
+        margin-left: 2%;
+    }
+
+    75% {
+        margin-top: 0%;
+        margin-left: 1%;
+    }
+
+    100% {
+        margin-top: 2%;
+        margin-left: 0%;
+    }
+}
+
+@keyframes animation_perso_combat_p2 {
+    0% {
+        margin-top: 2%;
+        margin-right: 0%;
+    }
+
+    25% {
+        margin-top: 0%;
+        margin-right: 1%;
+    }
+
+    50% {
+        margin-top: 2%;
+        margin-right: 2%;
+    }
+
+    75% {
+        margin-top: 0%;
+        margin-right: 1%;
+    }
+
+    100% {
+        margin-top: 2%;
+        margin-right: 0%;
+    }
 }
 
 @keyframes debut_combat {
@@ -689,6 +751,16 @@ background: red !important;
         opacity: 1;
         background: #462737;
     }
+}
+
+.animation_degat_p1 {
+    animation: degat 1.3s, animation_perso_combat_p1 1.3s infinite;
+    animation-timing-function: ease-out;
+}
+
+.animation_degat_p2 {
+    animation: degat 1.3s, animation_perso_combat_p2 1.3s infinite;
+    animation-timing-function: ease-out;
 }
 
 @keyframes degat {
@@ -817,7 +889,6 @@ background: red !important;
     height: 100%;
     background: red;
     border-radius: 5px;
-    margin-left: -1px;
 }
 
 

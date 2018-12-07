@@ -23,6 +23,7 @@ class Personnage {
         this.pm = 3;
         this.skin = skin;
         this.arme = 1;
+        this.degat = 10;
         this.inventaire = [];
         //this.position_x = position_x;
         //this.position_y = position_y;

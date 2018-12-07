@@ -278,7 +278,7 @@ class Plateau {
                     //console.log("Perso pas dans mur");
                     this.perso[1] = new Personnage();
                     this.perso[1].init(1, "perso4.png", Posx, Posy);
-                    this.perso[1].hp = 24;
+                    this.perso[1].hp = 100;
                     if ($('.perso').length == 0) {
                         $('.case:nth-child(' + nb + ')').addClass('perso');
 
@@ -373,7 +373,7 @@ class Plateau {
                         nb = (Posx_p2 * this.nb_cases_x) + Posy_p2 + 1;
                         this.perso[2] = new Personnage();
                         this.perso[2].init(2, "perso10.png", Posx_p2, Posy_p2);
-                        this.perso[2].hp = 48;
+                        this.perso[2].hp = 100;
                         this.perso[2].updatePosition(Posx_p2, Posy_p2);
                         if ($('.perso2').length === 0) {
 
@@ -638,7 +638,7 @@ class Plateau {
 
                     plateau.perso[2].updatePosition(nouveauX, nouveauY);
 
-                    if ($('.perso_colle').length == 0) {
+                    if ($('.perso_colle').length === 0) {
                         plateau.creationZoneDeplacementP1();
                         plateau.tour = 1;
                         $('.perso1 img').addClass('animation_perso');
@@ -659,11 +659,15 @@ class Plateau {
         let nouveau_type_arme_perso = this.armes[nouveauX][nouveauY].type;
         if (this.tour === 1) {
             this.HUDUpdateArme("P1", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            this.perso[1].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[1].arme);
+
         }
         if (this.tour === 2) {
             this.HUDUpdateArme("P2", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            this.perso[2].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[2].arme);
+
         }
 
 
@@ -765,6 +769,98 @@ class Plateau {
         $('.combat_perso1 .degat').append('<p>' + degat_perso1 + '</p>');
         $('.combat_perso2 .degat').append('<p>' + degat_perso2 + '</p>');
         $('body').addClass('debut_combat');
+        this.gestionCombat();
+    }
+
+    gestionCombat() {
+        console.log(this.tour);
+
+        if (this.tour === 1) {
+            $('.combat_perso1 img').addClass("animation_combat_p1");
+            $('.combat_perso2 img').removeClass("animation_combat_p2");
+            $('.combat_perso2 img').removeClass("animation_degat_p2");
+            $('.combat_perso1 .attaque').click(function () {
+                if (plateau.tour === 1) {
+                    plateau.combatAttaque(1);
+                    plateau.tour = 2;
+                    plateau.gestionCombat();
+                }
+
+
+            })
+            $('.combat_perso1 .fuite').click(function () {
+                if (plateau.tour === 1) {
+                    plateau.combatFuite();
+                }
+            })
+
+        }
+
+        if (this.tour === 2) {
+            $('.combat_perso2 img').addClass("animation_combat_p2");
+            $('.combat_perso1 img').removeClass("animation_combat_p1");
+            $('.combat_perso1 img').removeClass("animation_degat_p1");
+            $('.combat_perso2 .attaque').click(function () {
+                if (plateau.tour === 2) {
+                    plateau.combatAttaque(2);
+                    plateau.tour = 1;
+                    plateau.gestionCombat();
+                }
+            })
+            $('.combat_perso2 .fuite').click(function () {
+                if (plateau.tour === 2) {
+                    plateau.combatFuite();
+                }
+            })
+
+        }
+
+    }
+
+    combatAttaque(perso) {
+        let receveur;
+        if (perso === 1) {
+            receveur = 2;
+        }
+        if (perso === 2) {
+            receveur = 1;
+        }
+        let type_arme = this.perso[perso].arme;
+        let degat = this.perso[perso].degat;
+        console.log(this.perso[perso].degat)
+
+        this.perso[receveur].hp = this.perso[receveur].hp - degat;
+        let vie_perso1 = this.perso[receveur].hp;
+        if (this.perso[receveur].hp < 0) {
+            this.perso[receveur].hp = 0;
+        }
+
+        $('.combat_perso' + receveur + ' .info .barre_vie .vie').css('width', vie_perso1 + '%');
+        console.log(this.perso[receveur].hp);
+        $('.combat_perso' + receveur + ' img').removeClass('animation_degat_p' + receveur);
+        $('.combat_perso' + receveur + ' img').addClass('animation_degat_p' + receveur);
+
+
+
+    }
+
+    combatFuite() {
+        $('.perso1').css('opacity', '1');
+        $('.perso2').css('opacity', '1');
+        $('.HUDP1').removeClass('opacity_neg');
+        $('.HUDP2').removeClass('opacity_neg');
+        $('body').removeClass('debut_combat');
+        $('.combat').remove();
+        $('.perso_colle').removeClass("perso_colle");
+
+
+        if (this.tour === 1) {
+            plateau.creationZoneDeplacementP1();
+        }
+        if (this.tour === 2) {
+            plateau.creationZoneDeplacementP2();
+        }
+
     }
 
 
