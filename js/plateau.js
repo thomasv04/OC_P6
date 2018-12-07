@@ -105,6 +105,7 @@ class Plateau {
             for (let j = 0; j < this.nb_cases_x; j++) {
                 this.cellules[i][j] = new Cellule();
                 this.cellules[i][j].init('' + i + '' + j, i, j, 40);
+                //init(id, x, y, taille, occupee, arme, potion
             }
         }
     }
@@ -358,26 +359,30 @@ class Plateau {
     creationPerso2() {
 
         let total_cases = this.nb_cases_x - 2;
-        let Posx = parseInt(Math.random() * (total_cases - 1) + 1);
-        let Posy = parseInt(Math.random() * (total_cases - 1) + 1);
+        let Posx_p2 = parseInt(Math.random() * (total_cases - 1) + 1);
+        let Posy_p2 = parseInt(Math.random() * (total_cases - 1) + 1);
         //console.log('Posx ' + Posx);
         //console.log('Posy ' + Posy);
-        let nb = (Posx * this.nb_cases_x) + Posy + 1;
+        let nb = (Posx_p2 * this.nb_cases_x) + Posy_p2 + 1;
         if (!$('.case:nth-child(' + nb + ')').hasClass('protection')) {
             //console.log("oui")
-            if (this.cellules[Posx][Posy].mur == false) {
-                if (this.cellules[Posx][Posy].potion == false) {
-                    if (this.cellules[Posx][Posy].arme == false) {
+            if (this.cellules[Posx_p2][Posy_p2].mur == false) {
+                if (this.cellules[Posx_p2][Posy_p2].potion == false) {
+                    if (this.cellules[Posx_p2][Posy_p2].arme == false) {
                         //console.log("Perso pas dans mur");
+                        nb = (Posx_p2 * this.nb_cases_x) + Posy_p2 + 1;
                         this.perso[2] = new Personnage();
-                        this.perso[2].init(2, "perso10.png", Posx, Posy);
+                        this.perso[2].init(2, "perso10.png", Posx_p2, Posy_p2);
                         this.perso[2].hp = 48;
-                        if ($('.perso2').length == 0) {
+                        this.perso[2].updatePosition(Posx_p2, Posy_p2);
+                        if ($('.perso2').length === 0) {
+
                             $('.case:nth-child(' + nb + ')').addClass('perso');
 
                             $('.case:nth-child(' + nb + ').perso').append('<div class="perso2"><div class="HUD_player">' + this.perso[2].hp + ' ❤️</div><img src="img/' + this.perso[2].skin + '" alt=""></div>');
 
                             $('.protection').removeClass('protection');
+
 
 
                         }
@@ -391,16 +396,11 @@ class Plateau {
 
         if ($('.case:nth-child(' + nb + ')').hasClass('protection')) {
             this.creationPerso2();
-        }
-
-
-        if (this.cellules[Posx][Posy].mur == true) {
+        } else if (this.cellules[Posx_p2][Posy_p2].mur == true) {
             this.creationPerso2();
-        }
-        if (this.cellules[Posx][Posy].potion == true) {
+        } else if (this.cellules[Posx_p2][Posy_p2].potion == true) {
             this.creationPerso2();
-        }
-        if (this.cellules[Posx][Posy].arme == true) {
+        } else if (this.cellules[Posx_p2][Posy_p2].arme == true) {
             this.creationPerso2();
         }
 
@@ -462,8 +462,8 @@ class Plateau {
     }
 
     creationZoneDeplacementP2() {
-        let PosXJ2 = this.perso[2].x;
-        let PosYJ2 = this.perso[2].y;
+        let PosXJ2 = this.perso[2].getX();
+        let PosYJ2 = this.perso[2].getY();
 
         /**for (let x = PosXJ1; x < PosXJ1 + this.perso[1].pm; x++) {
             console.log(this.cellules[x][PosYJ1].id);
@@ -693,7 +693,10 @@ class Plateau {
             nb_perso = 2
         }
         if (type_potion === 1) {
-            this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+            if ($('.HUDP' + nb_perso + ' .inventaire .potion').length !== 9) {
+                this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+            }
+
         }
 
         if (type_potion === 2) {
@@ -707,7 +710,9 @@ class Plateau {
         }
 
         if (type_potion === 3) {
-            this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+            if ($('.HUDP' + nb_perso + ' .inventaire .potion').length !== 9) {
+                this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+            }
         }
 
         if (type_potion === 4) {
@@ -734,12 +739,14 @@ class Plateau {
         console.log($('.plateau').height())
         $('.combat').css('width', $('.plateau').width());
         $('.combat').css('height', $('.plateau').height());
-        $('.HUDP1').css('opacity', '0');
-        $('.HUDP2').css('opacity', '0');
+        $('.HUDP1').addClass('opacity_neg');
+        $('.HUDP2').addClass('opacity_neg');
         $('.HUDP1 .image .image_perso').clone().appendTo(".combat_perso1");
         $('.HUDP2 .image .image_perso').clone().appendTo(".combat_perso2");
         $('.combat_perso1').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso2').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso1').addClass('opacity');
+        $('.combat_perso2').addClass('opacity');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
         $('.barre_vie').append('<div class="vie"></div>');
         $('.action').append('<div class="bouton attaque"><p>Attaquer</p></div><div class="bouton defence"><p>Se defendre</p></div><div class="bouton objet_action"><p>Inventaire</p></div><div class="bouton fuite"><p>Fuire</p></div>');
@@ -757,6 +764,7 @@ class Plateau {
         $('.combat_perso2 .armure').append('<p>' + armure_perso2 + '</p>');
         $('.combat_perso1 .degat').append('<p>' + degat_perso1 + '</p>');
         $('.combat_perso2 .degat').append('<p>' + degat_perso2 + '</p>');
+        $('body').addClass('debut_combat');
     }
 
 
