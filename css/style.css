@@ -10,8 +10,17 @@ body {
     position: relative;
     background: #1B1317;
     image-rendering: pixelated;
-    //transition: background 1s linear;
 
+}
+
+img {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
 }
 
 h1 {
@@ -107,6 +116,7 @@ h1 {
 
 }
 
+
 .HUDP1 img:nth-child(2) {
     width: 10%;
 
@@ -123,6 +133,10 @@ h1 {
     width: 60%;
 
 
+}
+
+.chest {
+    cursor: pointer;
 }
 
 .information div {
@@ -511,6 +525,7 @@ background: red !important;
 
 .deplacement {
     position: relative;
+    cursor: pointer;
 
 }
 
@@ -582,6 +597,7 @@ background: red !important;
     height: 100%;
     display: block;
     position: relative;
+    padding: 5px;
 }
 
 .combat .zone_combat .combat_perso1 {
@@ -655,7 +671,6 @@ background: red !important;
     height: 80%;
     margin-left: 5%;
     margin-top: 3%;
-    transform: scaleX(-1);
 
 }
 
@@ -763,6 +778,11 @@ background: red !important;
     animation-timing-function: ease-out;
 }
 
+.animation_degat {
+    animation: degat 1.3s infinite;
+    animation-timing-function: ease-out;
+}
+
 @keyframes degat {
     0% {
         filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(900%) contrast(0.8);
@@ -795,6 +815,13 @@ background: red !important;
     width: 50%;
     background: #624253;
 
+}
+
+.inventaire_combat {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background: #624253;
 }
 
 .armure {
@@ -861,9 +888,50 @@ background: red !important;
     left: 0;
     bottom: 0;
     border-radius: 10px;
-
-
 }
+
+.combat_perso2 .inventaire_combat {
+    left: 0;
+    bottom: 0;
+    border-radius: 10px;
+}
+
+.combat_perso1 .inventaire_combat {
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+}
+
+.inventaire_combat {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+    align-items: center;
+}
+
+
+.inventaire_combat div {
+    width: 25%;
+    height: 25%;
+    border-radius: 10px;
+    position: relative;
+    margin: 5px;
+}
+
+.inventaire_combat div img {
+    display: block;
+    width: 40%;
+    height: auto !important;
+    margin: auto !important;
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    animation: none;
+}
+
+
 
 .combat_perso1 .armure {
     right: 52%;
@@ -887,8 +955,20 @@ background: red !important;
 
 .barre_vie .vie {
     height: 100%;
+    width: 0%;
     background: red;
     border-radius: 5px;
+    transition: width 1.3s;
+}
+
+.barre_vie .vie p {
+    position: absolute;
+    left: 50%;
+    margin-top: 15px;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 
@@ -929,6 +1009,20 @@ background: red !important;
     width: 100%;
     text-align: center;
 
+}
+
+.mort {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    font-size: 4vw;
+    text-transform: uppercase;
+    color: white;
+    word-spacing: 20px;
+    opacity: 0;
 }
 
 
@@ -990,6 +1084,8 @@ background: red !important;
 
 
     }
+
+
 
     .HUDP2 .inventaire div:nth-child(1) {
         order: 1;

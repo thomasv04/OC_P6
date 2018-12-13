@@ -28,8 +28,9 @@ class Plateau {
             }
         }
 
-        this.tour = 1;
 
+
+        this.tour = 1;
 
 
 
@@ -91,12 +92,30 @@ class Plateau {
         $('.HUDP' + perso + ' .shield').html(this.perso[perso].shield + ' 🛡️');
     }
 
-    HUDUpdateInventaire(perso, potion) {
-        let nouvelle_potion_id = $('.HUDP' + perso + ' .inventaire .potion').length + 1;
+    HUDUpdateInventaire(perso) {
+        /**let nouvelle_potion_id = $('.HUDP' + perso + ' .inventaire .potion').length + 1;
         $('.HUDP' + perso + ' .inventaire div:nth-child(' + nouvelle_potion_id + ')').html('<img src="img/' + potion.skin + '" alt="">');
         $('.HUDP' + perso + ' .inventaire div:nth-child(' + nouvelle_potion_id + ')').addClass('potion');
-        this.perso[perso].inventaire[nouvelle_potion_id] = potion.type;
-        console.log(this.perso[perso].inventaire);
+        this.perso[perso].inventaire[nouvelle_potion_id - 1] = potion;**/
+
+
+        let taille_tableau = this.perso[perso].inventaire.length;
+        let taille_vide = 9 - taille_tableau;
+        $('.HUDP' + perso + ' .inventaire').html("");
+        for (var i = 0; i < taille_tableau; i++) {
+            let skin = this.perso[perso].inventaire[i].skin;
+            $('.HUDP' + perso + ' .inventaire').append('<div class="potion"><img src="img/' + skin + '" alt=""></div>');
+        }
+        for (var j = 0; j < taille_vide; j++) {
+            $('.HUDP' + perso + ' .inventaire').append('<div></div>');
+        }
+
+    }
+
+    ajoutPotionInventaire(perso, potion) {
+        let nouvelle_potion_id = $('.HUDP' + perso + ' .inventaire .potion').length;
+        this.perso[perso].inventaire[nouvelle_potion_id] = potion;
+        this.HUDUpdateInventaire(perso);
     }
 
     creationCellules() {
@@ -135,7 +154,6 @@ class Plateau {
                 if (this.cellules[i][j].decor == true) {
                     let nb = (i * this.nb_cases_x) + j + 1;
                     let type_decor = parseInt(Math.random() * (6.1 - 1) + 1);
-                    //console.log(type_decor);
                     $('.case:nth-child(' + nb + ')').addClass('decor');
 
                     if (type_decor == 1) {
@@ -219,7 +237,7 @@ class Plateau {
 
                 if (this.cellules[i][j].potion) {
 
-                    let type_potion = parseInt(Math.random() * (5.1 - 1) + 1);
+                    let type_potion = parseInt(Math.random() * (5.5 - 1) + 1);
 
                     this.potions[i][j] = new Potion();
                     this.potions[i][j].init('' + i + '' + j, type_potion);
@@ -571,7 +589,7 @@ class Plateau {
                     plateau.perso[1].updatePosition(nouveauX, nouveauY);
                     if ($('.perso_colle').length == 0) {
                         plateau.creationZoneDeplacementP2();
-                        plateau.tour = 2;
+                        plateau.changementTour();
                         $('.perso1 img').removeClass('animation_perso');
                         $('.perso2 img').addClass('animation_perso');
                     } else {
@@ -640,7 +658,7 @@ class Plateau {
 
                     if ($('.perso_colle').length === 0) {
                         plateau.creationZoneDeplacementP1();
-                        plateau.tour = 1;
+                        plateau.changementTour();
                         $('.perso1 img').addClass('animation_perso');
                         $('.perso2 img').removeClass('animation_perso');
                     } else {
@@ -651,6 +669,29 @@ class Plateau {
 
             }
         })
+
+
+    }
+
+    changementTour() {
+        if (this.tour === 1) {
+            this.tour = 2;
+            if (this.perso[1].poison === 1) {
+                this.perso[1].hp = this.perso[1].hp - 5;
+                this.HUDUpdateVie(1);
+            }
+        } else if (this.tour === 2) {
+            this.tour = 1;
+            if (this.perso[2].poison === 1) {
+                this.perso[2].hp = this.perso[2].hp - 5;
+                this.HUDUpdateVie(2);
+            }
+        }
+
+        $('.combat_perso1 .info .barre_vie .vie').html('<p>' + this.perso[1].hp + '/100</p>');
+        $('.combat_perso1 .info .barre_vie .vie').css('width', this.perso[1].hp + '%');
+        $('.combat_perso2 .info .barre_vie .vie').html('<p>' + this.perso[2].hp + '/100</p>');
+        $('.combat_perso2 .info .barre_vie .vie').css('width', this.perso[2].hp + '%');
 
 
     }
@@ -688,7 +729,6 @@ class Plateau {
 
     recupererPotion(nb_case, nouveauX, nouveauY) {
         let type_potion = this.potions[nouveauX][nouveauY].type;
-        console.log(type_potion);
         var nb_perso;
         if (this.tour === 1) {
             nb_perso = 1
@@ -697,9 +737,7 @@ class Plateau {
             nb_perso = 2
         }
         if (type_potion === 1) {
-            if ($('.HUDP' + nb_perso + ' .inventaire .potion').length !== 9) {
-                this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
-            }
+            this.perso[nb_perso].pm = this.perso[nb_perso].pm + 2;
 
         }
 
@@ -715,7 +753,7 @@ class Plateau {
 
         if (type_potion === 3) {
             if ($('.HUDP' + nb_perso + ' .inventaire .potion').length !== 9) {
-                this.HUDUpdateInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+                this.ajoutPotionInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
             }
         }
 
@@ -726,7 +764,9 @@ class Plateau {
         }
 
         if (type_potion === 5) {
-            this.perso[nb_perso].pm = this.perso[nb_perso].pm + 2;
+            if ($('.HUDP' + nb_perso + ' .inventaire .potion').length !== 9) {
+                this.ajoutPotionInventaire(nb_perso, this.potions[nouveauX][nouveauY]);
+            }
 
         }
         $('.case:nth-child(' + nb_case + ') .objet').css('display', 'none');
@@ -739,21 +779,20 @@ class Plateau {
         $('.combat').append('<div class="zone_combat"></div>');
         $('.zone_combat').append('<div class="combat_perso1"></div>');
         $('.zone_combat').append('<div class="combat_perso2"></div>');
-        console.log($('.plateau').width())
-        console.log($('.plateau').height())
-        $('.combat').css('width', $('.plateau').width());
-        $('.combat').css('height', $('.plateau').height());
+        $('.combat').css('width', $('.plateau').width() + 10);
+        $('.combat').css('height', $('.plateau').height() + 10);
         $('.HUDP1').addClass('opacity_neg');
         $('.HUDP2').addClass('opacity_neg');
         $('.HUDP1 .image .image_perso').clone().appendTo(".combat_perso1");
         $('.HUDP2 .image .image_perso').clone().appendTo(".combat_perso2");
-        $('.combat_perso1').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
-        $('.combat_perso2').append('<div class="info"></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso1').append('<div class="info"></div><div class="inventaire_combat"></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso2').append('<div class="info"></div><div class="inventaire_combat"></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso1').addClass('opacity');
         $('.combat_perso2').addClass('opacity');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
-        $('.barre_vie').append('<div class="vie"></div>');
-        $('.action').append('<div class="bouton attaque"><p>Attaquer</p></div><div class="bouton defence"><p>Se defendre</p></div><div class="bouton objet_action"><p>Inventaire</p></div><div class="bouton fuite"><p>Fuire</p></div>');
+        $('.combat_perso1 .info .barre_vie').append('<div class="vie"><p>' + this.perso[1].hp + '/100</p></div>');
+        $('.combat_perso2 .info .barre_vie').append('<div class="vie"><p>' + this.perso[2].hp + '/100</p></div>');
+        $('.action').append('<div class="bouton attaque"><p>Attaquer</p></div><div class="bouton defense"><p>Se defendre</p></div><div class="bouton objet_action"><p>Inventaire</p></div><div class="bouton fuite"><p>Fuir</p></div>');
         let vie_perso1 = this.perso[1].hp;
         let vie_perso2 = this.perso[2].hp;
         let armure_perso1 = this.perso[1].shield + ' 🛡️';
@@ -769,12 +808,34 @@ class Plateau {
         $('.combat_perso1 .degat').append('<p>' + degat_perso1 + '</p>');
         $('.combat_perso2 .degat').append('<p>' + degat_perso2 + '</p>');
         $('body').addClass('debut_combat');
+        this.remplirInventaireCombat(1);
+        this.remplirInventaireCombat(2);
         this.gestionCombat();
     }
 
-    gestionCombat() {
-        console.log(this.tour);
+    remplirInventaireCombat(perso) {
+        let nbPotionInventaire = this.perso[perso].inventaire.length;
+        let caseInventaireVide = 9 - nbPotionInventaire;
 
+        for (var i = 0; i < nbPotionInventaire; i++) {
+            var zone_potion = i;
+            var potion = this.perso[perso].inventaire[zone_potion];
+            var skin_potion = potion.skin;
+            $('.combat_perso' + perso + ' .inventaire_combat').append('<div class="potion_combat" id="' + i + '"><img src="img/' + skin_potion + '" id="' + i + '"></img></div>');
+        }
+
+        for (var j = 0; j < caseInventaireVide; j++) {
+            //$('.combat_perso' + perso + ' .inventaire_combat').append('<div class="vide_combat"></div>')
+            //console.log('vide');
+        }
+
+
+
+        // $('.combat_perso'+perso+' .inventaire_combat')
+    }
+
+    gestionCombat() {
+        this.gestionMort();
         if (this.tour === 1) {
             $('.combat_perso1 img').addClass("animation_combat_p1");
             $('.combat_perso2 img').removeClass("animation_combat_p2");
@@ -782,7 +843,7 @@ class Plateau {
             $('.combat_perso1 .attaque').click(function () {
                 if (plateau.tour === 1) {
                     plateau.combatAttaque(1);
-                    plateau.tour = 2;
+                    plateau.changementTour();
                     plateau.gestionCombat();
                 }
 
@@ -791,6 +852,20 @@ class Plateau {
             $('.combat_perso1 .fuite').click(function () {
                 if (plateau.tour === 1) {
                     plateau.combatFuite();
+                }
+            })
+
+            $('.combat_perso1 .defense').click(function () {
+                if (plateau.tour === 1) {
+                    plateau.perso[1].defense = 1;
+                    plateau.changementTour();
+                    plateau.gestionCombat();
+                }
+            })
+
+            $('.combat_perso1 .objet_action').one("click", function () {
+                if (plateau.tour === 1) {
+                    plateau.gestionInventaireCombat(1);
                 }
             })
 
@@ -803,7 +878,7 @@ class Plateau {
             $('.combat_perso2 .attaque').click(function () {
                 if (plateau.tour === 2) {
                     plateau.combatAttaque(2);
-                    plateau.tour = 1;
+                    plateau.changementTour();
                     plateau.gestionCombat();
                 }
             })
@@ -813,11 +888,30 @@ class Plateau {
                 }
             })
 
+            $('.combat_perso2 .defense').click(function () {
+                if (plateau.tour === 2) {
+                    plateau.perso[2].defense = 1;
+                    plateau.changementTour();
+                    plateau.gestionCombat();
+                }
+            })
+
+            $('.combat_perso2 .objet_action').one("click", function () {
+                if (plateau.tour === 2) {
+                    plateau.gestionInventaireCombat(2);
+
+
+                }
+            })
+
         }
+
+
 
     }
 
     combatAttaque(perso) {
+        console.log("attaque")
         let receveur;
         if (perso === 1) {
             receveur = 2;
@@ -826,19 +920,56 @@ class Plateau {
             receveur = 1;
         }
         let type_arme = this.perso[perso].arme;
-        let degat = this.perso[perso].degat;
-        console.log(this.perso[perso].degat)
+        let degat;
+        let armure;
 
-        this.perso[receveur].hp = this.perso[receveur].hp - degat;
+
+        if (this.perso[receveur].defense === 1) {
+            if (this.perso[receveur].shield !== 0) {
+                armure = 50 + this.perso[receveur].shield;
+                degat = this.perso[perso].degat - (this.perso[perso].degat) * (armure / 100);
+
+            } else if (this.perso[receveur].shield === 0) {
+                degat = (this.perso[perso].degat) / 2;
+            }
+            this.perso[receveur].defense = 0;
+
+        } else if (this.perso[receveur].defense === 0) {
+            if (this.perso[receveur].shield !== 0) {
+                armure = this.perso[receveur].shield;
+                degat = this.perso[perso].degat - (this.perso[perso].degat) * (armure / 100);
+
+            } else if (this.perso[receveur].shield === 0) {
+                degat = this.perso[perso].degat;
+            }
+
+        }
+
+        let hp_finaux = this.perso[receveur].hp - degat;
+        hp_finaux = hp_finaux.toFixed(1);
+
+        if (hp_finaux === 0.0) {
+            hp_finaux = 0;
+        }
+
+        this.perso[receveur].hp = hp_finaux;
         let vie_perso1 = this.perso[receveur].hp;
         if (this.perso[receveur].hp < 0) {
             this.perso[receveur].hp = 0;
         }
 
+        if (this.perso[receveur].hp === 0.00) {
+            this.perso[receveur].hp = 0;
+        }
+        $('.combat_perso' + receveur + ' .info .barre_vie .vie').html('<p>' + this.perso[receveur].hp + '/100</p>');
         $('.combat_perso' + receveur + ' .info .barre_vie .vie').css('width', vie_perso1 + '%');
-        console.log(this.perso[receveur].hp);
         $('.combat_perso' + receveur + ' img').removeClass('animation_degat_p' + receveur);
         $('.combat_perso' + receveur + ' img').addClass('animation_degat_p' + receveur);
+
+        this.HUDUpdateVie(perso)
+        this.HUDUpdateVie(receveur)
+
+        this.gestionMort()
 
 
 
@@ -853,14 +984,85 @@ class Plateau {
         $('.combat').remove();
         $('.perso_colle').removeClass("perso_colle");
 
+        this.HUDUpdateVie(1);
+        this.HUDUpdateVie(2);
+        this.HUDUpdateInventaire(1);
+        this.HUDUpdateInventaire(2);
 
         if (this.tour === 1) {
             plateau.creationZoneDeplacementP1();
+
         }
         if (this.tour === 2) {
             plateau.creationZoneDeplacementP2();
         }
 
+    }
+
+    gestionMort() {
+        let mort = 0;
+        if (this.perso[1].hp === 0) {
+            mort = 1;
+            $('body').append('<div class="mort"><h2>Victoire du joueur 2</h2></div>');
+        }
+        if (this.perso[2].hp === 0) {
+            mort = 1;
+            $('body').append('<div class="mort"><h2>Victoire du joueur 1</h2></div>');
+        }
+
+        if (mort === 1) {
+            $('.combat_perso1').removeClass("opacity").addClass("opacity_neg");
+            $('.combat_perso2').removeClass("opacity").addClass("opacity_neg");
+
+            $('.mort').addClass("opacity");
+
+
+        }
+    }
+
+    gestionInventaireCombat(perso) {
+        //console.log(plateau.perso[1].inventaire);
+        //console.log(plateau.perso[2].inventaire);
+        if (perso === 1) {
+            var receveur = 2;
+        }
+        if (perso === 2) {
+            var receveur = 1;
+        }
+        if (plateau.perso[perso].inventaire.length !== 0) {
+            $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'flex');
+            $('.combat_perso' + perso + ' .inventaire_combat .potion_combat').click(function () {
+                let index_potion = $(this).attr("id");
+                //console.log('id=' + index_potion)
+                //console.log('plateau.perso[' + perso + '].inventaire[' + index_potion + '].type');
+                //console.log('type=' + plateau.perso[perso].inventaire[index_potion].type)
+
+                if (index_potion !== -1) {
+                    if (plateau.perso[perso].inventaire[index_potion].type === 3) {
+                        plateau.perso[receveur].poison = 1;
+                    }
+
+                    if (plateau.perso[perso].inventaire[index_potion].type === 5) {
+                        plateau.perso[receveur].poison = 0;
+                    }
+
+
+
+                    plateau.perso[perso].inventaire.splice(index_potion, 1);
+                    $('.combat_perso' + perso + ' .inventaire_combat').html("");
+                    plateau.remplirInventaireCombat(perso);
+
+                    $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'none');
+
+
+
+
+                }
+
+            })
+
+        }
+        return false;
     }
 
 

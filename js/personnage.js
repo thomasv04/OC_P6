@@ -10,7 +10,8 @@ class Personnage {
         this.position_x = null;
         this.position_y = null;
         this.inventaire = null;
-
+        this.defense = null;
+        this.poison = null;
     }
 
     //init(id, skin, position_x, position_y) {
@@ -25,6 +26,8 @@ class Personnage {
         this.arme = 1;
         this.degat = 10;
         this.inventaire = [];
+        this.defense = 0;
+        this.poison = 0;
         //this.position_x = position_x;
         //this.position_y = position_y;
 

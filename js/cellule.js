@@ -31,7 +31,7 @@ class Cellule {
         }
 
         if (this.mur == false) {
-            this.potion = Math.random() < 0.96 ? false : true;
+            this.potion = Math.random() < 0.90 ? false : true;
 
             if (this.potion == false) {
                 this.arme = Math.random() < 0.98 ? false : true;
