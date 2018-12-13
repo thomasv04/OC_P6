@@ -863,7 +863,7 @@ class Plateau {
                 }
             })
 
-            $('.combat_perso1 .objet_action').one("click", function () {
+            $('.combat_perso1 .objet_action').click(function () {
                 if (plateau.tour === 1) {
                     plateau.gestionInventaireCombat(1);
                 }
@@ -896,7 +896,7 @@ class Plateau {
                 }
             })
 
-            $('.combat_perso2 .objet_action').one("click", function () {
+            $('.combat_perso2 .objet_action').click(function () {
                 if (plateau.tour === 2) {
                     plateau.gestionInventaireCombat(2);
 
