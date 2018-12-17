@@ -275,7 +275,12 @@ class Plateau {
                         this.armes[i][j] = new Weapon();
                         this.armes[i][j].init('' + i + '' + j, type_arme);
                         $('.case:nth-child(' + nb + ')').addClass('arme');
-                        $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">' + this.armes[i][j].puissance + ' ⚔️</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
+                        if(type_arme === 8){
+                            $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">Mystère</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
+                        } else {
+                            $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">' + this.armes[i][j].puissance + ' ⚔️</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
+                        }
+                        
 
                     }
 
@@ -728,7 +733,7 @@ class Plateau {
         let nouveau_type_arme_perso = this.armes[nouveauX][nouveauY].type;
         if (this.tour === 1) {
             if(this.armes[nouveauX][nouveauY].type === 8){
-                alert("arme verte");
+                
                 this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[1].hp);
                 
             }
@@ -739,7 +744,7 @@ class Plateau {
         }
         if (this.tour === 2) {
             if(this.armes[nouveauX][nouveauY].type === 8){
-                alert("arme verte");
+                
                 this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[2].hp);
                 
             }
@@ -961,7 +966,6 @@ class Plateau {
     }
 
     combatAttaque(perso) {
-        console.log("attaque")
         let receveur;
         if (perso === 1) {
             receveur = 2;
@@ -1131,7 +1135,6 @@ class Plateau {
     
     gestionDegatArmeVerte(vie_perso){
         let degat_arme = ((100 - parseInt(this.perso[2].hp))+10)/4;
-        alert(degat_arme)
         return degat_arme;
     }
 

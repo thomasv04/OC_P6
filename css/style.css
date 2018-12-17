@@ -653,7 +653,7 @@ background: red !important;
     }
 }
 
-.combat .zone_combat .combat_perso2 img {
+.combat .zone_combat .combat_perso2 .image_perso {
     display: block;
     margin: auto;
     float: right;
@@ -664,7 +664,7 @@ background: red !important;
 
 }
 
-.combat .zone_combat .combat_perso1 img {
+.combat .zone_combat .combat_perso1 .image_perso {
     display: block;
     margin: auto;
     float: left;
@@ -672,6 +672,30 @@ background: red !important;
     margin-left: 5%;
     margin-top: 3%;
 
+}
+
+.combat_perso1 .epee {
+    position:absolute;
+    display:block;
+    margin:auto;
+    height:50%;
+    margin-right: 5%;
+    margin-top: 2%;
+    left:27%;
+    top:15%;
+    
+}
+
+.combat_perso2 .epee {
+    position:absolute;
+    display:block;
+    margin:auto;
+    height:50%;
+    margin-left: 5%;
+    margin-top: 3%;
+    right:27%;
+    top:15%;
+    
 }
 
 .animation_combat_p1 {
@@ -962,6 +986,8 @@ background: red !important;
 .combat_perso2 .armure {
     left: 52%;
 }
+
+
 
 .barre_vie {
     width: 80%;
