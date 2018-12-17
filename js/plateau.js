@@ -62,8 +62,8 @@ class Plateau {
 
     creationHUD() {
         $('body').append('<div class="HUDP1"></div><div class="HUDP2"></div>');
-        $('.HUDP1').append('<div class="image"><img src="img/' + this.perso[1].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
-        $('.HUDP2').append('<div class="image"><img src="img/' + this.perso[2].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt=""><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP1').append('<div class="image"><img src="img/' + this.perso[1].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt="" class="epee"><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
+        $('.HUDP2').append('<div class="image"><img src="img/' + this.perso[2].skin + '" alt="" class="image_perso"><img src="img/wood_sword.png" alt="" class="epee"><img src="img/chest.png" alt="" class="chest"><div class="inventaire"</div></div>');
         $('.HUDP1').append('<div class="information"></div>');
         $('.HUDP2').append('<div class="information"></div>');
         $('.HUDP1 .information').append('<div class="vie">' + this.perso[1].hp + ' ❤️</div>');
@@ -84,7 +84,11 @@ class Plateau {
     }
 
     HUDUpdateArme(P1, skin, deg) {
-        $('.HUD' + P1 + ' .image img:nth-child(2)').replaceWith('<img src="img/' + skin + '" alt="">');
+        $('.HUD' + P1 + ' .image img:nth-child(2)').replaceWith('<img src="img/' + skin + '" alt="" class="epee">');
+        $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
+    }
+    
+    HUDUpdateDegArme(P1,deg){
         $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
     }
 
@@ -264,7 +268,7 @@ class Plateau {
                 if (this.cellules[i][j].arme) {
 
                     if ($('.arme').length < 4) {
-                        let type_arme = parseInt(Math.random() * (8.1 - 2) + 2);
+                        let type_arme = parseInt(Math.random() * (8.5 - 2) + 2);
 
 
 
@@ -695,11 +699,27 @@ class Plateau {
                 this.HUDUpdateVie(2);
             }
         }
+        
+        if(this.perso[1].arme === 8){
+            let deg = ((100 - parseInt(this.perso[1].hp))+10)/4;
+            this.HUDUpdateDegArme("P1",deg);
+            this.perso[1].degat = deg;
+            $('.combat_perso1 .degat').html('<p>'+this.perso[1].degat+' ⚔️</p>');
+        }
+        
+        if(this.perso[2].arme === 8){
+            let deg = ((100 - parseInt(this.perso[2].hp))+10)/4;
+           this.HUDUpdateDegArme("P2",deg);
+            this.perso[2].degat = deg;
+            $('.combat_perso2 .degat').html('<p>'+this.perso[2].degat+' ⚔️</p>');
+        }
 
         $('.combat_perso1 .info .barre_vie .vie').html('<p>' + this.perso[1].hp + '/100</p>');
         $('.combat_perso1 .info .barre_vie .vie').css('width', this.perso[1].hp + '%');
         $('.combat_perso2 .info .barre_vie .vie').html('<p>' + this.perso[2].hp + '/100</p>');
         $('.combat_perso2 .info .barre_vie .vie').css('width', this.perso[2].hp + '%');
+        
+        this.gestionMort();
 
 
     }
@@ -707,15 +727,27 @@ class Plateau {
     recupererArme(nb_case, nouveauX, nouveauY) {
         let nouveau_type_arme_perso = this.armes[nouveauX][nouveauY].type;
         if (this.tour === 1) {
+            if(this.armes[nouveauX][nouveauY].type === 8){
+                alert("arme verte");
+                this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[1].hp);
+                
+            }
             this.HUDUpdateArme("P1", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            
             this.perso[1].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[1].arme);
-
         }
         if (this.tour === 2) {
+            if(this.armes[nouveauX][nouveauY].type === 8){
+                alert("arme verte");
+                this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[2].hp);
+                
+            }
             this.HUDUpdateArme("P2", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
+            
             this.perso[2].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[2].arme);
+            
 
         }
 
@@ -793,13 +825,26 @@ class Plateau {
         $('.HUDP2').addClass('opacity_neg');
         $('.HUDP1 .image .image_perso').clone().appendTo(".combat_perso1");
         $('.HUDP2 .image .image_perso').clone().appendTo(".combat_perso2");
+        $('.HUDP1 .image .epee').clone().appendTo(".combat_perso1");
+        $('.HUDP2 .image .epee').clone().appendTo(".combat_perso2");
         $('.combat_perso1').append('<div class="info"></div><div class="inventaire_combat"><div class="fermer"><p>X</p></div></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso2').append('<div class="info"></div><div class="inventaire_combat"><div class="fermer"><p>X</p></div></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso1').addClass('opacity');
         $('.combat_perso2').addClass('opacity');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
-        $('.combat_perso1 .info .barre_vie').append('<div class="vie"><p>' + this.perso[1].hp + '/100</p></div>');
-        $('.combat_perso2 .info .barre_vie').append('<div class="vie"><p>' + this.perso[2].hp + '/100</p></div>');
+        if(this.perso[1].poison === 1){
+            $('.combat_perso1 .info .barre_vie').append('<div class="vie poison"><p>' + this.perso[1].hp + '/100</p></div>');
+        } else if(this.perso[1].poison === 0){
+            $('.combat_perso1 .info .barre_vie').append('<div class="vie"><p>' + this.perso[1].hp + '/100</p></div>');
+        }
+
+        if(this.perso[2].poison === 1){
+            $('.combat_perso2 .info .barre_vie').append('<div class="vie poison"><p>' + this.perso[2].hp + '/100</p></div>');
+        } else if(this.perso[2].poison === 0){
+            $('.combat_perso2 .info .barre_vie').append('<div class="vie"><p>' + this.perso[2].hp + '/100</p></div>');
+        }
+
+
         $('.action').append('<div class="bouton attaque"><p>Attaquer</p></div><div class="bouton defense"><p>Se defendre</p></div><div class="bouton objet_action"><p>Inventaire</p></div><div class="bouton fuite"><p>Fuir</p></div>');
         let vie_perso1 = this.perso[1].hp;
         let vie_perso2 = this.perso[2].hp;
@@ -818,13 +863,13 @@ class Plateau {
         $('body').addClass('debut_combat');
         this.remplirInventaireCombat(1);
         this.remplirInventaireCombat(2);
-        this.gestionCombat2();
+        this.gestionCombat();
     }
 
     remplirInventaireCombat(perso) {
         let nbPotionInventaire = this.perso[perso].inventaire.length;
         let caseInventaireVide = 9 - nbPotionInventaire;
-
+        $('.combat_perso' + perso + ' .inventaire_combat').append('<div class="fermer"><p>X</p></div>');
         for (var i = 0; i < nbPotionInventaire; i++) {
             var zone_potion = i;
             var potion = this.perso[perso].inventaire[zone_potion];
@@ -844,94 +889,15 @@ class Plateau {
 
     gestionCombat() {
         this.gestionMort();
-        if (this.tour === 1) {
-            $('.combat_perso1 img').addClass("animation_combat_p1");
-            $('.combat_perso2 img').removeClass("animation_combat_p2");
-            $('.combat_perso2 img').removeClass("animation_degat_p2");
-            $('.combat_perso1 .attaque').click(function () {
-                if (plateau.tour === 1) {
-                    plateau.combatAttaque(1);
-                    plateau.changementTour();
-                    return plateau.gestionCombat();
-                }
-
-
-            })
-            $('.combat_perso1 .fuite').click(function () {
-                if (plateau.tour === 1) {
-                    plateau.combatFuite();
-                }
-            })
-
-            $('.combat_perso1 .defense').click(function () {
-                if (plateau.tour === 1) {
-                    plateau.perso[1].defense = 1;
-                    plateau.changementTour();
-                    return plateau.gestionCombat();
-                }
-            })
-
-            $('.combat_perso1 .objet_action').click(function () {
-                if (plateau.tour === 1) {
-                    plateau.gestionInventaireCombat(1);
-                }
-            })
-
-        }
-
-        if (this.tour === 2) {
-            $('.combat_perso2 img').addClass("animation_combat_p2");
-            $('.combat_perso1 img').removeClass("animation_combat_p1");
-            $('.combat_perso1 img').removeClass("animation_degat_p1");
-            $('.combat_perso2 .attaque').click(function () {
-                if (plateau.tour === 2) {
-                    console.log("testclick");
-                    plateau.combatAttaque(2);
-                    plateau.changementTour();
-                    return plateau.gestionCombat();
-
-                }
-            })
-            $('.combat_perso2 .fuite').click(function () {
-                if (plateau.tour === 2) {
-                    plateau.combatFuite();
-                }
-            })
-
-            $('.combat_perso2 .defense').click(function () {
-                if (plateau.tour === 2) {
-                    plateau.perso[2].defense = 1;
-                    plateau.changementTour();
-                    return plateau.gestionCombat();
-                }
-            })
-
-            $('.combat_perso2 .objet_action').click(function () {
-                console.log("test")
-                if (plateau.tour === 2) {
-                    plateau.gestionInventaireCombat(2);
-
-
-                }
-            })
-
-        }
-
-
-
-    }
-
-    gestionCombat2() {
-        this.gestionMort();
-        $('.combat_perso'+this.receveur+' img').addClass('animation_combat_p'+this.receveur);
+        $('.combat_perso'+this.receveur+' .image_perso').addClass('animation_combat_p'+this.receveur);
 
         $('.combat_perso1 .attaque').click(function () {
             if(plateau.tour === 1){
                 plateau.combatAttaque(1);
                 plateau.changementTour();
-                $('.combat_perso2 img').addClass('animation_combat_p2');
-                $('.combat_perso1 img').removeClass('animation_combat_p1');
-                $('.combat_perso1 img').removeClass('animation_degat_p1');
+                $('.combat_perso2 .image_perso').addClass('animation_combat_p2');
+                $('.combat_perso1 .image_perso').removeClass('animation_combat_p1');
+                $('.combat_perso1 .image_perso').removeClass('animation_degat_p1');
             }
         })
 
@@ -939,9 +905,9 @@ class Plateau {
             if(plateau.tour === 2){
                 plateau.combatAttaque(2);
                 plateau.changementTour();
-                $('.combat_perso1 img').addClass('animation_combat_p1');
-                $('.combat_perso2 img').removeClass('animation_combat_p2');
-                $('.combat_perso2 img').removeClass('animation_degat_p2');
+                $('.combat_perso1 .image_perso').addClass('animation_combat_p1');
+                $('.combat_perso2 .image_perso').removeClass('animation_combat_p2');
+                $('.combat_perso2 .image_perso').removeClass('animation_degat_p2');
             }
         })
 
@@ -961,9 +927,9 @@ class Plateau {
             if(plateau.tour === 1){
                 plateau.perso[1].defense = 1;
                 plateau.changementTour();
-                $('.combat_perso2 img').addClass('animation_combat_p2');
-                $('.combat_perso1 img').removeClass('animation_combat_p1');
-                $('.combat_perso1 img').removeClass('animation_degat_p1');
+                $('.combat_perso2 .image_perso').addClass('animation_combat_p2');
+                $('.combat_perso1 .image_perso').removeClass('animation_combat_p1');
+                $('.combat_perso1 .image_perso').removeClass('animation_degat_p1');
             }
 
         })
@@ -972,9 +938,9 @@ class Plateau {
             if(plateau.tour === 2){
                 plateau.perso[2].defense = 1;
                 plateau.changementTour();
-                $('.combat_perso1 img').addClass('animation_combat_p1');
-                $('.combat_perso2 img').removeClass('animation_combat_p2');
-                $('.combat_perso2 img').removeClass('animation_degat_p2');
+                $('.combat_perso1 .image_perso').addClass('animation_combat_p1');
+                $('.combat_perso2 .image_perso').removeClass('animation_combat_p2');
+                $('.combat_perso2 .image_perso').removeClass('animation_degat_p2');
             }
 
         })
@@ -1006,6 +972,12 @@ class Plateau {
         let type_arme = this.perso[perso].arme;
         let degat;
         let armure;
+        if(type_arme === 7){
+            this.perso[perso].hp = parseInt( this.perso[perso].hp) + 2;
+            if(this.perso[perso].hp >= 100){
+                this.perso[perso].hp = 100;
+            }
+        }
 
 
         if (this.perso[receveur].defense === 1) {
@@ -1030,7 +1002,7 @@ class Plateau {
         }
 
         let hp_finaux = this.perso[receveur].hp - degat;
-        hp_finaux = hp_finaux.toFixed(1);
+        hp_finaux = hp_finaux.toFixed(0);
 
         if (hp_finaux === 0.0) {
             hp_finaux = 0;
@@ -1047,8 +1019,8 @@ class Plateau {
         }
         $('.combat_perso' + receveur + ' .info .barre_vie .vie').html('<p>' + this.perso[receveur].hp + '/100</p>');
         $('.combat_perso' + receveur + ' .info .barre_vie .vie').css('width', vie_perso1 + '%');
-        $('.combat_perso' + receveur + ' img').removeClass('animation_degat_p' + receveur);
-        $('.combat_perso' + receveur + ' img').addClass('animation_degat_p' + receveur);
+        $('.combat_perso' + receveur + ' .image_perso').removeClass('animation_degat_p' + receveur);
+        $('.combat_perso' + receveur + ' .image_perso').addClass('animation_degat_p' + receveur);
 
         this.HUDUpdateVie(perso)
         this.HUDUpdateVie(receveur)
@@ -1126,12 +1098,12 @@ class Plateau {
 
                 if (index_potion !== -1) {
                     if (plateau.perso[perso].inventaire[index_potion].type === 3) {
-                        $('.combat_perso' + receveur + ' .info .barre_vie .vie').css('background','green');
+                        $('.combat_perso' + receveur + ' .info .barre_vie .vie').addClass('poison');
                         plateau.perso[receveur].poison = 1;
                     }
 
                     if (plateau.perso[perso].inventaire[index_potion].type === 5) {
-                        $('.combat_perso' + perso + ' .info .barre_vie .vie').css('background','#d60d0d');
+                        $('.combat_perso' + perso + ' .info .barre_vie .vie').removeClass('poison');
                         plateau.perso[perso].poison = 0;
                     }
 
@@ -1141,9 +1113,9 @@ class Plateau {
                     $('.combat_perso' + perso + ' .inventaire_combat').html("");
                     plateau.remplirInventaireCombat(perso);
 
-                    $('.combat_perso'+receveur+' img').addClass('animation_combat_p'+receveur);
-                    $('.combat_perso'+perso+' img').removeClass('animation_combat_p'+perso);
-                    $('.combat_perso'+perso+' img').removeClass('animation_degat_p'+perso);
+                    $('.combat_perso'+receveur+' .image_perso').addClass('animation_combat_p'+receveur);
+                    $('.combat_perso'+perso+' .image_perso').removeClass('animation_combat_p'+perso);
+                    $('.combat_perso'+perso+' .image_perso').removeClass('animation_degat_p'+perso);
 
                     $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'none');
 
@@ -1155,6 +1127,12 @@ class Plateau {
             })
 
         }
+    }
+    
+    gestionDegatArmeVerte(vie_perso){
+        let degat_arme = ((100 - parseInt(this.perso[2].hp))+10)/4;
+        alert(degat_arme)
+        return degat_arme;
     }
 
 

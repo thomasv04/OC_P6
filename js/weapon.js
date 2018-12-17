@@ -57,7 +57,6 @@ class Weapon {
 
         if (this.type == 8) {
             this.skin = "poison_sword.png";
-            this.puissance = 12;
             this.effet = "poison";
         }
 
@@ -113,7 +112,6 @@ class Weapon {
 
         if (this.type == 8) {
             this.skin = "poison_sword.png";
-            this.puissance = 12;
             this.effet = "poison";
         }
     }

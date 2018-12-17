@@ -983,6 +983,10 @@ background: red !important;
     transition: width 1.3s;
 }
 
+.poison{
+    background:green !important;
+}
+
 .barre_vie .vie p {
     position: absolute;
     left: 50%;
