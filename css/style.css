@@ -821,6 +821,7 @@ background: red !important;
     position: absolute;
     height: 100%;
     width: 50%;
+    top:0;
     background: #624253;
 }
 
@@ -910,6 +911,27 @@ background: red !important;
     align-items: center;
 }
 
+.inventaire_combat .fermer{
+    position:absolute;
+    display:block;
+    width: 30px;
+    top:5px;
+    height: 30px;
+    padding:0;
+    margin:0;
+    right:5px;
+    background:#462737;
+    color:white;
+    cursor: pointer;
+}
+
+.inventaire_combat .fermer p{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
 
 .inventaire_combat div {
     width: 25%;
@@ -956,7 +978,7 @@ background: red !important;
 .barre_vie .vie {
     height: 100%;
     width: 0%;
-    background: red;
+    background: #d60d0d;
     border-radius: 5px;
     transition: width 1.3s;
 }

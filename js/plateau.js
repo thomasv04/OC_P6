@@ -10,6 +10,8 @@ class Plateau {
         this.armes = null;
         this.perso = null;
         this.tour = null;
+        this.emetteur = null;
+        this.receveur = null;
 
     }
 
@@ -39,6 +41,8 @@ class Plateau {
         this.potions = [];
         this.armes = [];
         this.perso = [];
+        this.emetteur = 1;
+        this.receveur = 2;
 
 
         this.creationCellules();
@@ -675,12 +679,16 @@ class Plateau {
 
     changementTour() {
         if (this.tour === 1) {
+            this.emetteur = 1;
+            this.receveur = 2;
             this.tour = 2;
             if (this.perso[1].poison === 1) {
                 this.perso[1].hp = this.perso[1].hp - 5;
                 this.HUDUpdateVie(1);
             }
         } else if (this.tour === 2) {
+            this.emetteur = 2;
+            this.receveur = 1;
             this.tour = 1;
             if (this.perso[2].poison === 1) {
                 this.perso[2].hp = this.perso[2].hp - 5;
@@ -785,8 +793,8 @@ class Plateau {
         $('.HUDP2').addClass('opacity_neg');
         $('.HUDP1 .image .image_perso').clone().appendTo(".combat_perso1");
         $('.HUDP2 .image .image_perso').clone().appendTo(".combat_perso2");
-        $('.combat_perso1').append('<div class="info"></div><div class="inventaire_combat"></div><div class="armure"></div><div class="degat"></div>');
-        $('.combat_perso2').append('<div class="info"></div><div class="inventaire_combat"></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso1').append('<div class="info"></div><div class="inventaire_combat"><div class="fermer"><p>X</p></div></div><div class="armure"></div><div class="degat"></div>');
+        $('.combat_perso2').append('<div class="info"></div><div class="inventaire_combat"><div class="fermer"><p>X</p></div></div><div class="armure"></div><div class="degat"></div>');
         $('.combat_perso1').addClass('opacity');
         $('.combat_perso2').addClass('opacity');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
@@ -810,7 +818,7 @@ class Plateau {
         $('body').addClass('debut_combat');
         this.remplirInventaireCombat(1);
         this.remplirInventaireCombat(2);
-        this.gestionCombat();
+        this.gestionCombat2();
     }
 
     remplirInventaireCombat(perso) {
@@ -844,7 +852,7 @@ class Plateau {
                 if (plateau.tour === 1) {
                     plateau.combatAttaque(1);
                     plateau.changementTour();
-                    plateau.gestionCombat();
+                    return plateau.gestionCombat();
                 }
 
 
@@ -859,7 +867,7 @@ class Plateau {
                 if (plateau.tour === 1) {
                     plateau.perso[1].defense = 1;
                     plateau.changementTour();
-                    plateau.gestionCombat();
+                    return plateau.gestionCombat();
                 }
             })
 
@@ -877,9 +885,11 @@ class Plateau {
             $('.combat_perso1 img').removeClass("animation_degat_p1");
             $('.combat_perso2 .attaque').click(function () {
                 if (plateau.tour === 2) {
+                    console.log("testclick");
                     plateau.combatAttaque(2);
                     plateau.changementTour();
-                    plateau.gestionCombat();
+                    return plateau.gestionCombat();
+
                 }
             })
             $('.combat_perso2 .fuite').click(function () {
@@ -892,11 +902,12 @@ class Plateau {
                 if (plateau.tour === 2) {
                     plateau.perso[2].defense = 1;
                     plateau.changementTour();
-                    plateau.gestionCombat();
+                    return plateau.gestionCombat();
                 }
             })
 
             $('.combat_perso2 .objet_action').click(function () {
+                console.log("test")
                 if (plateau.tour === 2) {
                     plateau.gestionInventaireCombat(2);
 
@@ -908,6 +919,79 @@ class Plateau {
 
 
 
+    }
+
+    gestionCombat2() {
+        this.gestionMort();
+        $('.combat_perso'+this.receveur+' img').addClass('animation_combat_p'+this.receveur);
+
+        $('.combat_perso1 .attaque').click(function () {
+            if(plateau.tour === 1){
+                plateau.combatAttaque(1);
+                plateau.changementTour();
+                $('.combat_perso2 img').addClass('animation_combat_p2');
+                $('.combat_perso1 img').removeClass('animation_combat_p1');
+                $('.combat_perso1 img').removeClass('animation_degat_p1');
+            }
+        })
+
+        $('.combat_perso2 .attaque').click(function () {
+            if(plateau.tour === 2){
+                plateau.combatAttaque(2);
+                plateau.changementTour();
+                $('.combat_perso1 img').addClass('animation_combat_p1');
+                $('.combat_perso2 img').removeClass('animation_combat_p2');
+                $('.combat_perso2 img').removeClass('animation_degat_p2');
+            }
+        })
+
+        $('.combat_perso1 .fuite').click(function () {
+            if(plateau.tour === 1){
+                plateau.combatFuite();
+            }
+        })
+
+        $('.combat_perso2 .fuite').click(function () {
+            if(plateau.tour === 2){
+                plateau.combatFuite();
+            }
+        })
+
+        $('.combat_perso1 .defense').click(function () {
+            if(plateau.tour === 1){
+                plateau.perso[1].defense = 1;
+                plateau.changementTour();
+                $('.combat_perso2 img').addClass('animation_combat_p2');
+                $('.combat_perso1 img').removeClass('animation_combat_p1');
+                $('.combat_perso1 img').removeClass('animation_degat_p1');
+            }
+
+        })
+
+        $('.combat_perso2 .defense').click(function () {
+            if(plateau.tour === 2){
+                plateau.perso[2].defense = 1;
+                plateau.changementTour();
+                $('.combat_perso1 img').addClass('animation_combat_p1');
+                $('.combat_perso2 img').removeClass('animation_combat_p2');
+                $('.combat_perso2 img').removeClass('animation_degat_p2');
+            }
+
+        })
+
+        $('.combat_perso1 .objet_action').click(function () {
+            if(plateau.tour === 1){
+                plateau.gestionInventaireCombat(1);
+            }
+
+        })
+
+        $('.combat_perso2 .objet_action').click(function () {
+            if(plateau.tour === 2){
+                plateau.gestionInventaireCombat(2);
+            }
+
+        })
     }
 
     combatAttaque(perso) {
@@ -1031,6 +1115,9 @@ class Plateau {
         }
         if (plateau.perso[perso].inventaire.length !== 0) {
             $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'flex');
+            $('.combat_perso' + perso + ' .inventaire_combat .fermer').click(function () {
+                $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'none');
+            })
             $('.combat_perso' + perso + ' .inventaire_combat .potion_combat').click(function () {
                 let index_potion = $(this).attr("id");
                 //console.log('id=' + index_potion)
@@ -1039,18 +1126,24 @@ class Plateau {
 
                 if (index_potion !== -1) {
                     if (plateau.perso[perso].inventaire[index_potion].type === 3) {
+                        $('.combat_perso' + receveur + ' .info .barre_vie .vie').css('background','green');
                         plateau.perso[receveur].poison = 1;
                     }
 
                     if (plateau.perso[perso].inventaire[index_potion].type === 5) {
-                        plateau.perso[receveur].poison = 0;
+                        $('.combat_perso' + perso + ' .info .barre_vie .vie').css('background','#d60d0d');
+                        plateau.perso[perso].poison = 0;
                     }
 
-
+                    plateau.changementTour();
 
                     plateau.perso[perso].inventaire.splice(index_potion, 1);
                     $('.combat_perso' + perso + ' .inventaire_combat').html("");
                     plateau.remplirInventaireCombat(perso);
+
+                    $('.combat_perso'+receveur+' img').addClass('animation_combat_p'+receveur);
+                    $('.combat_perso'+perso+' img').removeClass('animation_combat_p'+perso);
+                    $('.combat_perso'+perso+' img').removeClass('animation_degat_p'+perso);
 
                     $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'none');
 
@@ -1062,7 +1155,6 @@ class Plateau {
             })
 
         }
-        return false;
     }
 
 
