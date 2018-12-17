@@ -94,6 +94,7 @@ class Plateau {
 
     HUDUpdateVie(perso) {
         $('.HUDP' + perso + ' .vie').html(this.perso[perso].hp + ' ❤️');
+        $('.perso'+ perso + ' .HUD_player').html(this.perso[perso].hp + ' ❤️');
     }
 
     HUDUpdateShield(perso) {
