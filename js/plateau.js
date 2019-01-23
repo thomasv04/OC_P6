@@ -87,14 +87,14 @@ class Plateau {
         $('.HUD' + P1 + ' .image img:nth-child(2)').replaceWith('<img src="img/' + skin + '" alt="" class="epee">');
         $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
     }
-    
-    HUDUpdateDegArme(P1,deg){
+
+    HUDUpdateDegArme(P1, deg) {
         $('.HUD' + P1 + ' .information .damage').html(deg + ' ⚔️');
     }
 
     HUDUpdateVie(perso) {
         $('.HUDP' + perso + ' .vie').html(this.perso[perso].hp + ' ❤️');
-        $('.perso'+ perso + ' .HUD_player').html(this.perso[perso].hp + ' ❤️');
+        $('.perso' + perso + ' .HUD_player').html(this.perso[perso].hp + ' ❤️');
     }
 
     HUDUpdateShield(perso) {
@@ -276,12 +276,12 @@ class Plateau {
                         this.armes[i][j] = new Weapon();
                         this.armes[i][j].init('' + i + '' + j, type_arme);
                         $('.case:nth-child(' + nb + ')').addClass('arme');
-                        if(type_arme === 8){
+                        if (type_arme === 8) {
                             $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">Mystère</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
                         } else {
                             $('.case:nth-child(' + nb + ').arme').append('<div class="objet"><div class="HUD_arme">' + this.armes[i][j].puissance + ' ⚔️</div><img src="img/' + this.armes[i][j].skin + '" alt=""></div>')
                         }
-                        
+
 
                     }
 
@@ -705,26 +705,26 @@ class Plateau {
                 this.HUDUpdateVie(2);
             }
         }
-        
-        if(this.perso[1].arme === 8){
-            let deg = ((100 - parseInt(this.perso[1].hp))+10)/4;
-            this.HUDUpdateDegArme("P1",deg);
+
+        if (this.perso[1].arme === 8) {
+            let deg = ((100 - parseInt(this.perso[1].hp)) + 10) / 4;
+            this.HUDUpdateDegArme("P1", deg);
             this.perso[1].degat = deg;
-            $('.combat_perso1 .degat').html('<p>'+this.perso[1].degat+' ⚔️</p>');
+            $('.combat_perso1 .degat').html('<p>' + this.perso[1].degat + ' ⚔️</p>');
         }
-        
-        if(this.perso[2].arme === 8){
-            let deg = ((100 - parseInt(this.perso[2].hp))+10)/4;
-           this.HUDUpdateDegArme("P2",deg);
+
+        if (this.perso[2].arme === 8) {
+            let deg = ((100 - parseInt(this.perso[2].hp)) + 10) / 4;
+            this.HUDUpdateDegArme("P2", deg);
             this.perso[2].degat = deg;
-            $('.combat_perso2 .degat').html('<p>'+this.perso[2].degat+' ⚔️</p>');
+            $('.combat_perso2 .degat').html('<p>' + this.perso[2].degat + ' ⚔️</p>');
         }
 
         $('.combat_perso1 .info .barre_vie .vie').html('<p>' + this.perso[1].hp + '/100</p>');
         $('.combat_perso1 .info .barre_vie .vie').css('width', this.perso[1].hp + '%');
         $('.combat_perso2 .info .barre_vie .vie').html('<p>' + this.perso[2].hp + '/100</p>');
         $('.combat_perso2 .info .barre_vie .vie').css('width', this.perso[2].hp + '%');
-        
+
         this.gestionMort();
 
 
@@ -733,27 +733,27 @@ class Plateau {
     recupererArme(nb_case, nouveauX, nouveauY) {
         let nouveau_type_arme_perso = this.armes[nouveauX][nouveauY].type;
         if (this.tour === 1) {
-            if(this.armes[nouveauX][nouveauY].type === 8){
-                
+            if (this.armes[nouveauX][nouveauY].type === 8) {
+
                 this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[1].hp);
-                
+
             }
             this.HUDUpdateArme("P1", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
-            
+
             this.perso[1].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[1].arme);
         }
         if (this.tour === 2) {
-            if(this.armes[nouveauX][nouveauY].type === 8){
-                
+            if (this.armes[nouveauX][nouveauY].type === 8) {
+
                 this.armes[nouveauX][nouveauY].puissance = this.gestionDegatArmeVerte(this.perso[2].hp);
-                
+
             }
             this.HUDUpdateArme("P2", this.armes[nouveauX][nouveauY].skin, this.armes[nouveauX][nouveauY].puissance);
-            
+
             this.perso[2].degat = this.armes[nouveauX][nouveauY].puissance;
             this.armes[nouveauX][nouveauY].updateType(this.perso[2].arme);
-            
+
 
         }
 
@@ -788,7 +788,7 @@ class Plateau {
         }
 
         if (type_potion === 2) {
-            let vie = this.perso[nb_perso].hp + 20;
+            let vie = parseInt(this.perso[nb_perso].hp) + 20;
             if (vie > 100) {
                 vie = 100;
             }
@@ -838,15 +838,15 @@ class Plateau {
         $('.combat_perso1').addClass('opacity');
         $('.combat_perso2').addClass('opacity');
         $('.info').append('<div class="barre_vie"></div><div class="action"></div>');
-        if(this.perso[1].poison === 1){
+        if (this.perso[1].poison === 1) {
             $('.combat_perso1 .info .barre_vie').append('<div class="vie poison"><p>' + this.perso[1].hp + '/100</p></div>');
-        } else if(this.perso[1].poison === 0){
+        } else if (this.perso[1].poison === 0) {
             $('.combat_perso1 .info .barre_vie').append('<div class="vie"><p>' + this.perso[1].hp + '/100</p></div>');
         }
 
-        if(this.perso[2].poison === 1){
+        if (this.perso[2].poison === 1) {
             $('.combat_perso2 .info .barre_vie').append('<div class="vie poison"><p>' + this.perso[2].hp + '/100</p></div>');
-        } else if(this.perso[2].poison === 0){
+        } else if (this.perso[2].poison === 0) {
             $('.combat_perso2 .info .barre_vie').append('<div class="vie"><p>' + this.perso[2].hp + '/100</p></div>');
         }
 
@@ -895,10 +895,10 @@ class Plateau {
 
     gestionCombat() {
         this.gestionMort();
-        $('.combat_perso'+this.receveur+' .image_perso').addClass('animation_combat_p'+this.receveur);
+        $('.combat_perso' + this.receveur + ' .image_perso').addClass('animation_combat_p' + this.receveur);
 
         $('.combat_perso1 .attaque').click(function () {
-            if(plateau.tour === 1){
+            if (plateau.tour === 1) {
                 plateau.combatAttaque(1);
                 plateau.changementTour();
                 $('.combat_perso2 .image_perso').addClass('animation_combat_p2');
@@ -908,7 +908,7 @@ class Plateau {
         })
 
         $('.combat_perso2 .attaque').click(function () {
-            if(plateau.tour === 2){
+            if (plateau.tour === 2) {
                 plateau.combatAttaque(2);
                 plateau.changementTour();
                 $('.combat_perso1 .image_perso').addClass('animation_combat_p1');
@@ -918,19 +918,19 @@ class Plateau {
         })
 
         $('.combat_perso1 .fuite').click(function () {
-            if(plateau.tour === 1){
+            if (plateau.tour === 1) {
                 plateau.combatFuite();
             }
         })
 
         $('.combat_perso2 .fuite').click(function () {
-            if(plateau.tour === 2){
+            if (plateau.tour === 2) {
                 plateau.combatFuite();
             }
         })
 
         $('.combat_perso1 .defense').click(function () {
-            if(plateau.tour === 1){
+            if (plateau.tour === 1) {
                 plateau.perso[1].defense = 1;
                 plateau.changementTour();
                 $('.combat_perso2 .image_perso').addClass('animation_combat_p2');
@@ -941,7 +941,7 @@ class Plateau {
         })
 
         $('.combat_perso2 .defense').click(function () {
-            if(plateau.tour === 2){
+            if (plateau.tour === 2) {
                 plateau.perso[2].defense = 1;
                 plateau.changementTour();
                 $('.combat_perso1 .image_perso').addClass('animation_combat_p1');
@@ -952,14 +952,14 @@ class Plateau {
         })
 
         $('.combat_perso1 .objet_action').click(function () {
-            if(plateau.tour === 1){
+            if (plateau.tour === 1) {
                 plateau.gestionInventaireCombat(1);
             }
 
         })
 
         $('.combat_perso2 .objet_action').click(function () {
-            if(plateau.tour === 2){
+            if (plateau.tour === 2) {
                 plateau.gestionInventaireCombat(2);
             }
 
@@ -977,9 +977,9 @@ class Plateau {
         let type_arme = this.perso[perso].arme;
         let degat;
         let armure;
-        if(type_arme === 7){
-            this.perso[perso].hp = parseInt( this.perso[perso].hp) + 2;
-            if(this.perso[perso].hp >= 100){
+        if (type_arme === 7) {
+            this.perso[perso].hp = parseInt(this.perso[perso].hp) + 2;
+            if (this.perso[perso].hp >= 100) {
                 this.perso[perso].hp = 100;
             }
         }
@@ -1062,11 +1062,11 @@ class Plateau {
 
     gestionMort() {
         let mort = 0;
-        if (this.perso[1].hp === 0) {
+        if (this.perso[1].hp <= 0) {
             mort = 1;
             $('body').append('<div class="mort"><h2>Victoire du joueur 2</h2></div>');
         }
-        if (this.perso[2].hp === 0) {
+        if (this.perso[2].hp <= 0) {
             mort = 1;
             $('body').append('<div class="mort"><h2>Victoire du joueur 1</h2></div>');
         }
@@ -1076,6 +1076,11 @@ class Plateau {
             $('.combat_perso2').removeClass("opacity").addClass("opacity_neg");
 
             $('.mort').addClass("opacity");
+
+            $('.plateau').addClass("opacity_neg");
+
+            $('.HUDP1').addClass("opacity_neg");
+            $('.HUDP2').addClass("opacity_neg");
 
 
         }
@@ -1118,9 +1123,9 @@ class Plateau {
                     $('.combat_perso' + perso + ' .inventaire_combat').html("");
                     plateau.remplirInventaireCombat(perso);
 
-                    $('.combat_perso'+receveur+' .image_perso').addClass('animation_combat_p'+receveur);
-                    $('.combat_perso'+perso+' .image_perso').removeClass('animation_combat_p'+perso);
-                    $('.combat_perso'+perso+' .image_perso').removeClass('animation_degat_p'+perso);
+                    $('.combat_perso' + receveur + ' .image_perso').addClass('animation_combat_p' + receveur);
+                    $('.combat_perso' + perso + ' .image_perso').removeClass('animation_combat_p' + perso);
+                    $('.combat_perso' + perso + ' .image_perso').removeClass('animation_degat_p' + perso);
 
                     $('.combat_perso' + perso + ' .inventaire_combat').css('display', 'none');
 
@@ -1133,9 +1138,9 @@ class Plateau {
 
         }
     }
-    
-    gestionDegatArmeVerte(vie_perso){
-        let degat_arme = ((100 - parseInt(this.perso[2].hp))+10)/4;
+
+    gestionDegatArmeVerte(vie_perso) {
+        let degat_arme = ((100 - parseInt(this.perso[2].hp)) + 10) / 4;
         return degat_arme;
     }
 
